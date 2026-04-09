@@ -33,6 +33,9 @@ ex.add_named_config('mot20_crowdhuman', 'cfgs/train_mot20_crowdhuman.yaml')
 ex.add_named_config('coco_person_masks', 'cfgs/train_coco_person_masks.yaml')
 ex.add_named_config('full_res', 'cfgs/train_full_res.yaml')
 ex.add_named_config('multi_frame', 'cfgs/train_multi_frame.yaml')
+# Added this line for egotracks prototype 
+ex.add_named_config('egotracks_prototype', 'cfgs/train_egotracks_prototype.yaml')
+
 
 
 def train(args: Namespace) -> None:

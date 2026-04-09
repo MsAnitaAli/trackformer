@@ -7,6 +7,7 @@ from torch.utils.data import Dataset
 from .mot17_sequence import MOT17Sequence
 from .mot20_sequence import MOT20Sequence
 from .mots20_sequence import MOTS20Sequence
+from .egotracks_sequence import EgotracksSequence # added to handle egotracks
 
 
 class MOT17Wrapper(Dataset):
@@ -118,3 +119,88 @@ class MOTS20Wrapper(MOT17Wrapper):
         self._data = []
         for seq in sequences:
             self._data.append(MOTS20Sequence(seq_name=seq, **kwargs))
+            
+"""
+# This is added for egotracks during training phase
+class EgotracksWrapper(Dataset):
+    #A Wrapper for the EgotracksSequence class to return multiple sequences.
+
+    def __init__(self, split: str, **kwargs) -> None:
+        #Initializes the Egotracks dataset split.
+
+        #Keyword arguments:
+        #split -- the split of the dataset to use (TRAIN/VAL/TEST)
+        #kwargs -- arguments passed to EgotracksSequence
+        #
+        # All video folders names are mentioned here
+        train_sequences = [
+            '1bc52b56-1e39-46df-be22-272480fd6022',
+            '606919f7-3d65-4b2b-8351-b6ad4af97723'
+        ]
+
+        if split == "TRAIN" or split == "VAL":
+            sequences = train_sequences
+        elif split == "ALL":
+            sequences = train_sequences
+        else:
+            # You can add specific TEST folders later if needed
+            raise NotImplementedError(f"Egotracks split {split} not available.")
+
+        self._data = []
+        for seq in sequences:
+            # We use dets=None because Egotracks doesn't use the MOT17 public det folders
+            self._data.append(EgotracksSequence(seq_name=seq, dets=None, **kwargs))
+
+    def __len__(self) -> int:
+        return len(self._data)
+
+    def __getitem__(self, idx: int):
+        return self._data[idx]
+"""
+
+# This part is added  during evaluation
+import os
+
+class EgotracksWrapper(Dataset):
+    """A generic Wrapper for Egotracks that scales automatically."""
+
+    def __init__(self, split: str, seq: str = None, **kwargs) -> None:
+        """
+        Args:
+            split: 'TRAIN', 'VAL', or 'TEST'
+            seq: Optional specific ClipUID (provided by factory.py)
+            kwargs: Arguments for EgotracksSequence
+        """
+        # Determine the source folder based on the split
+        # We assume 'VAL' also comes from the 'train' folder for now
+        subset = 'test' if split == 'TEST' else 'train'
+        subset_path = os.path.join('data/egotracks', subset)
+	# if train,tet and val folders are here then instaed of above two lines just use this  one
+	# subset = split.lower()
+        # Logic to determine which sequences to load
+        if seq is not None:
+            # If factory.py requested a specific clip, use only that one
+            sequences = [seq]
+        else:
+            # Otherwise, scan the folder and load EVERYTHING in that split
+            if os.path.exists(subset_path):
+                sequences = [f for f in os.listdir(subset_path) 
+                             if os.path.isdir(os.path.join(subset_path, f))]
+                sequences.sort()
+            else:
+                sequences = []
+
+        # 3. Initialize the sequences
+        self._data = []
+        for s in sequences:
+            self._data.append(EgotracksSequence(seq_name=s, dets=None, **kwargs))
+
+        if not self._data:
+            print(f"Warning: No Egotracks sequences found for {split} in {subset_path}")
+
+    def __len__(self) -> int:
+        return len(self._data)
+
+    def __getitem__(self, idx: int):
+        return self._data[idx]
+

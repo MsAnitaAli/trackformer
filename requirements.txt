@@ -55,7 +55,8 @@ motmetrics==1.2.0
 munch==2.5.0
 nbclient==0.5.1
 nbconvert==6.0.7
-nbformat==5.1.2
+# nbformat==5.1.2 # yanked
+nbformat==5.3.0
 nest-asyncio==1.5.1
 networkx==2.4
 ninja==1.10.0.post2

@@ -95,7 +95,8 @@ coco_path: data/coco_2017
 coco_panoptic_path: null
 mot_path_train: data/MOT17
 mot_path_val: data/MOT17
-crowdhuman_path: data/CrowdHuman
+#crowdhuman_path: data/CrowdHuman  # actual
+crowdhuman_path: data/CrowdHuman_selected # modified
 # allows for joint training of mot and crowdhuman/coco_person with the `mot_crowdhuman`/`mot_coco_person` dataset
 crowdhuman_train_split: null
 coco_person_train_split: null

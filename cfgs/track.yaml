@@ -45,3 +45,15 @@ tracker_cfg:
     reid_sim_only: false
     reid_score_thresh: 0.4
     reid_greedy_matching: false
+
+# Added this during evaluation 
+egotracks_prototype:
+    dataset_name: mot-egotracks-TRAIN
+    data_root_dir: data/egotracks
+    # Architecture settings must match your training
+    deformable: True
+    multi_frame: True
+    # Tracker specific overrides
+    tracker_cfg:
+        detection_obj_score_thresh: 0.4
+        track_obj_score_thresh: 0.4

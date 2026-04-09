@@ -91,11 +91,11 @@ class MOT17Sequence(Dataset):
             with open(det_file, "r") as inf:
                 reader = csv.reader(inf, delimiter=',')
                 for row in reader:
-                    x1 = float(row[2]) - 1
-                    y1 = float(row[3]) - 1
+                    x1 = float(row[2]) - 1  #  original
+                    y1 = float(row[3]) - 1  #  original
                     # This -1 accounts for the width (width of 1 x1=x2)
-                    x2 = x1 + float(row[4]) - 1
-                    y2 = y1 + float(row[5]) - 1
+                    x2 = x1 + float(row[4]) - 1 #  original
+                    y2 = y1 + float(row[5]) - 1 #  original
                     score = float(row[6])
                     bbox = np.array([x1, y1, x2, y2, score], dtype=np.float32)
                     dets[int(float(row[0]))].append(bbox)
@@ -135,15 +135,26 @@ class MOT17Sequence(Dataset):
                 # class person, certainity 1
                 if int(row[6]) == 1 and int(row[7]) == 1 and float(row[8]) >= self._vis_threshold:
                     # Make pixel indexes 0-based, should already be 0-based (or not)
+                    # original code
+                    """
                     x1 = int(row[2]) - 1
                     y1 = int(row[3]) - 1
                     # This -1 accounts for the width (width of 1 x1=x2)
                     x2 = x1 + int(row[4]) - 1
                     y2 = y1 + int(row[5]) - 1
+                    """
+                    # these lines are added to handle float value. in egotracks eval
+                    x1 = int(float(row[2])) - 1
+                    y1 = int(float(row[3])) - 1
+                    x2 = x1 + int(float(row[4])) - 1
+                    y2 = y1 + int(float(row[5])) - 1
                     bbox = np.array([x1, y1, x2, y2], dtype=np.float32)
 
-                    frame_id = int(row[0])
-                    track_id = int(row[1])
+                    # frame_id = int(row[0])
+                    # track_id = int(row[1])
+                    #added for egotracks
+                    frame_id = int(float(row[0]))
+                    track_id = int(float(row[1]))
 
                     boxes[frame_id][track_id] = bbox
                     visibility[frame_id][track_id] = float(row[8])

@@ -32,7 +32,10 @@ def build_dataset(split: str, args: Namespace) -> Dataset:
         dataset = build_coco(split, args)
     elif args.dataset == 'coco_person':
         dataset = build_coco(split, args, 'person_keypoints')
-    elif args.dataset == 'mot':
+    #elif args.dataset == 'mot': # original 
+    #    dataset = build_mot(split, args)  # original
+    # added this for egotracks 
+    elif args.dataset in ['mot', 'mot-egotracks-TRAIN']:
         dataset = build_mot(split, args)
     elif args.dataset == 'crowdhuman':
         dataset = build_crowdhuman(split, args)

@@ -20,7 +20,8 @@ from torchvision.ops.boxes import box_iou
 
 from trackformer.datasets.tracking.mots20_sequence import load_mots_gt
 
-MOTS_ROOT = 'data/MOTS20'
+#MOTS_ROOT = 'data/MOTS'# modified as fodler name is MOTS 
+MOTS_ROOT = 'data/MOTS20'# original
 VIS_THRESHOLD = 0.25
 
 MOT_15_SEQS_INFO = {
@@ -292,6 +293,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Generate COCO from MOT.')
     parser.add_argument('--mots20', action='store_true')
     parser.add_argument('--mot20', action='store_true')
+    parser.add_argument('--egotracks', action='store_true') # added
     args = parser.parse_args()
 
     mot15_seqs_names = list(MOT_15_SEQS_INFO.keys())
@@ -320,7 +322,8 @@ if __name__ == '__main__':
                 seqs_names=val_seqs, mots=True)
 
     elif args.mot20:
-        data_root = 'data/MOT20'
+        data_root = 'data/MOT20' # actual code
+        #data_root = 'data/MOT20_selected' # modified code NCCS
         train_seqs = ['MOT20-01', 'MOT20-02', 'MOT20-03', 'MOT20-05',]
         # TRAIN SET
         generate_coco_from_mot(
@@ -353,6 +356,37 @@ if __name__ == '__main__':
             frame_range={'start': 0.5, 'end': 1.0},
             data_root=data_root)
 
+    # code added for egotracks
+    elif hasattr(args, 'egotracks') and args.egotracks:
+        data_root = 'data/egotracks'
+        train_seqs = [
+            '1bc52b56-1e39-46df-be22-272480fd6022',
+            '606919f7-3d65-4b2b-8351-b6ad4af97723'
+        ]
+        
+        # 1. Generate the full training set
+        generate_coco_from_mot(
+            'egotracks_train_coco',
+            seqs_names=train_seqs,
+            data_root=data_root)
+
+        # 2. Optional: Generate cross-validation splits
+        # This is helpful for training/validating on different clips
+        """
+        for i in range(len(train_seqs)):
+            train_seqs_copy = train_seqs.copy()
+            val_seqs = [train_seqs_copy.pop(i)]
+
+            generate_coco_from_mot(
+                f'egotracks_train_{i + 1}_coco',
+                seqs_names=train_seqs_copy,
+                data_root=data_root)
+            generate_coco_from_mot(
+                f'egotracks_val_{i + 1}_coco',
+                seqs_names=val_seqs,
+                data_root=data_root)
+	"""
+    # egotracks code block ends here 
     else:
         #
         # MOT17
@@ -419,3 +453,4 @@ if __name__ == '__main__':
             generate_coco_from_mot(
                 f'mot17_val_{i + 1}_coco',
                 seqs_names=val_seqs)
+

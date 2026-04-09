@@ -7,7 +7,7 @@ val_split: mot20_train_cross_val_frame_0_5_to_1_0_coco
 mot_path_train: data/MOT20
 mot_path_val: data/MOT20
 
-resume: models/crowdhuman_deformable_trackformer/checkpoint_epoch_80.pth
-
+resume: models/crowdhuman_deformable_trackformer/checkpoint_epoch_80.pth # original
+#resume: models/crowdhuman_deformable_trackformer/checkpoint_epoch_80.pth # as my model check points were saved at this path
 epochs: 50
 lr_drop: 10

@@ -7,7 +7,7 @@ from typing import Union
 from torch.utils.data import ConcatDataset
 
 from .demo_sequence import DemoSequence
-from .mot_wrapper import MOT17Wrapper, MOT20Wrapper, MOTS20Wrapper
+from .mot_wrapper import MOT17Wrapper, MOT20Wrapper, MOTS20Wrapper, EgotracksWrapper
 
 DATASETS = {}
 
@@ -36,6 +36,46 @@ for split in ['TRAIN', 'TEST', 'ALL', '01', '02', '05', '06', '07', '09', '11', 
 
 DATASETS['DEMO'] = (lambda kwargs: [DemoSequence(**kwargs), ])
 
+"""
+#  this part is added to access egotracks data
+# this part was used during training phase
+for split in ['TRAIN', 'VAL', 'TEST']:
+    name = f'mot-egotracks-{split}'  # Added 'mot-' prefix 
+    # Use EgotracksWrapper directly instead of MOT17Wrapper
+    DATASETS[name] = (
+        lambda kwargs, split=split: EgotracksWrapper(split, **kwargs)
+    )
+# egootracks info ends here
+"""
+# this part was added during evaluation phase to handle all egotracks clips
+import  os
+EGOTRACKS_ROOT = 'data/egotracks'
+
+for split in ['TRAIN', 'VAL', 'TEST']:
+    name = f'mot-egotracks-{split}'
+    DATASETS[name] = (
+        lambda kwargs, split=split: EgotracksWrapper(split, **kwargs)
+    )
+
+# We scan both train and test folders to find clip uids
+for subset in ['train', 'test']:
+    subset_path = os.path.join(EGOTRACKS_ROOT, subset)
+    
+    if os.path.exists(subset_path):
+        # Find all subdirectories (these are your ClipUIDs)
+        clip_ids = [f for f in os.listdir(subset_path) 
+                     if os.path.isdir(os.path.join(subset_path, f))]
+        
+        for cid in clip_ids:
+            # Map the ClipUID directly to a dataset name
+            # We pass subset.upper() so the Wrapper knows if it's TRAIN or TEST
+            DATASETS[cid] = (
+                lambda kwargs, cid=cid, subset=subset: EgotracksWrapper(
+                    subset.upper(), seq=cid, **kwargs)
+            )
+
+#ends here
+
 
 class TrackDatasetFactory:
     """A central class to manage the individual dataset loaders.
@@ -43,6 +83,7 @@ class TrackDatasetFactory:
     This class contains the datasets. Once initialized the individual parts (e.g. sequences)
     can be accessed.
     """
+
 
     def __init__(self, datasets: Union[str, list], **kwargs) -> None:
         """Initialize the corresponding dataloader.

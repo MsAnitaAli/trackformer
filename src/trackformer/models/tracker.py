@@ -337,7 +337,8 @@ class Tracker:
 
             track_keep = torch.logical_and(
                 track_scores > self.track_obj_score_thresh,
-                result['labels'][:-self.num_object_queries] == 0)
+                #result['labels'][:-self.num_object_queries] == 0)#  original
+                result['labels'][:-self.num_object_queries] <= 1)#  for egotracks debugging
 
             tracks_to_inactive = []
             tracks_from_inactive = []
@@ -360,7 +361,8 @@ class Tracker:
 
             track_keep = torch.logical_and(
                 track_scores > self.reid_score_thresh,
-                result['labels'][:-self.num_object_queries] == 0)
+                #result['labels'][:-self.num_object_queries] == 0)# original
+                result['labels'][:-self.num_object_queries] <= 1)#  for egotracks debugging
 
             # reid queries
             for i, track in enumerate(self.inactive_tracks, start=len(self.tracks)):
@@ -412,7 +414,8 @@ class Tracker:
                     if track not in remove_tracks]
 
         # NEW DETS
-        new_det_scores = result['scores'][-self.num_object_queries:]
+        new_det_scores = result['scores'][-self.num_object_queries:]# 
+        # add these print statements to see what is going  on 
         new_det_boxes = boxes[-self.num_object_queries:]
         new_det_hs_embeds = hs_embeds[-self.num_object_queries:]
 
@@ -423,7 +426,9 @@ class Tracker:
 
         new_det_keep = torch.logical_and(
             new_det_scores > self.detection_obj_score_thresh,
-            result['labels'][-self.num_object_queries:] == 0)
+            #result['labels'][-self.num_object_queries:] == 0)#  original
+            result['labels'][-self.num_object_queries:] <= 1)#  modified to handle egotracks
+            
 
         new_det_boxes = new_det_boxes[new_det_keep]
         new_det_scores = new_det_scores[new_det_keep]

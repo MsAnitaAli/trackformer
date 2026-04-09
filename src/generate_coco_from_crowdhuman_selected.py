@@ -8,7 +8,8 @@ import cv2
 
 from generate_coco_from_mot import check_coco_from_mot
 
-DATA_ROOT = 'data/CrowdHuman'# original
+#DATA_ROOT = 'data/CrowdHuman'# original
+DATA_ROOT = 'data/CrowdHuman_selected'# modified
 VIS_THRESHOLD = 0.0
 
 
@@ -54,6 +55,12 @@ def generate_coco_from_crowdhuman(split_name='train_val', split='train_val'):
         for data in datalist:
             json_data = json.loads(data)
             gtboxes = json_data['gtboxes']
+            crowdhuman_img_id = json_data['ID']
+            if crowdhuman_img_id not in img_file_name_to_id:
+                # If the image ID from the annotation file is NOT in the map
+                # (meaning you didn't link the image), skip the entire image's annotations.
+                continue
+            # --- END: New check ---
             for gtbox in gtboxes:
                 if gtbox['tag'] == 'person':
                     bbox = gtbox['fbox']

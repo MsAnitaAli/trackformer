@@ -52,6 +52,10 @@ class DETRTrackingBase(nn.Module):
 
         for i, (target, prev_ind) in enumerate(zip(targets, prev_indices)):
             prev_out_ind, prev_target_ind = prev_ind
+            # add these two lines to handle cpucuda index issue
+            prev_out_ind = prev_out_ind.to(device)  # modified
+            prev_target_ind = prev_target_ind.to(device) # modified
+            # above two lines were not  in original repo
 
             # random subset
             if self._track_query_false_negative_prob: # and len(prev_target_ind):
@@ -140,7 +144,8 @@ class DETRTrackingBase(nn.Module):
 
                     random_false_out_ind.append(random_false_out_idx)
 
-                prev_out_ind = torch.tensor(prev_out_ind.tolist() + random_false_out_ind).long()
+                #prev_out_ind = torch.tensor(prev_out_ind.tolist() + random_false_out_ind).long() # original
+                prev_out_ind = torch.tensor(prev_out_ind.tolist() + random_false_out_ind).long().to(device) # modified
 
                 target_ind_matching = torch.cat([
                     target_ind_matching,

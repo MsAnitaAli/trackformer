@@ -1,0 +1,21 @@
+# Dataset Identification
+dataset: mot-egotracks-TRAIN
+
+# Split names (It matches  with my egotracks_train_coco.json)
+train_split: egotracks_train_coco 
+val_split: egotracks_train_coco  # as for prototype tarin set is used for both testing and validation
+
+
+# Paths to your data
+mot_path_train: data/egotracks
+mot_path_val: data/egotracks
+
+# Training Hyperparameters 
+epochs: 20
+lr_drop: 10
+batch_size: 1  # I Started with 1 to avoid "Out of Memory" errors 
+
+# Checkpoint and Output
+resume: 'models/mot20_crowdhuman_deformable_multi_frame/checkpoint_epoch_50.pth'
+output_dir: 'models/egotracks_prototype'
+

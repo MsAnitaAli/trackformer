@@ -195,13 +195,19 @@ def plot_sequence(tracks, data_loader, output_dir, write_images, generate_attent
                         ))
 
                     annotate_color = cmap(track_id)
-
+# original 
+#                if write_images == 'debug':
+#                    ax.annotate(
+#                       f"{track_id} - {track_data[frame_id]['obj_ind']} ({track_data[frame_id]['score']:.2f})",
+#                        (bbox[0] + (bbox[2] - bbox[0]) / 2.0, bbox[1] + (bbox[3] - bbox[1]) / 2.0),
+#                       color=annotate_color, weight='bold', fontsize=12, ha='center', va='center')
+#Modified starts
                 if write_images == 'debug':
                     ax.annotate(
-                        f"{track_id} - {track_data[frame_id]['obj_ind']} ({track_data[frame_id]['score']:.2f})",
-                        (bbox[0] + (bbox[2] - bbox[0]) / 2.0, bbox[1] + (bbox[3] - bbox[1]) / 2.0),
-                        color=annotate_color, weight='bold', fontsize=12, ha='center', va='center')
-
+                        f"ID: {track_id}",
+                        (bbox[0], bbox[1] - 10),
+                        color=annotate_color, weight='bold', fontsize=12, ha='left', va='center')
+#Modified ends
                 if 'attention_map' in track_data[frame_id]:
                     attention_map = track_data[frame_id]['attention_map']
                     attention_map = cv2.resize(attention_map, (width, height))
