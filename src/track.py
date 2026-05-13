@@ -24,7 +24,7 @@ mm.lap.default_solver = 'lap'
 ex = sacred.Experiment('track')
 ex.add_config('cfgs/track.yaml')
 ex.add_named_config('reid', 'cfgs/track_reid.yaml')
-ex.add_named_config('egotracks_prototype', 'cfgs/track.yaml') 
+ex.add_named_config('egotracks_prototype', 'cfgs/track.yaml') # Added for egotracks
 
 
 @ex.automain

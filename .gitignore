@@ -22,3 +22,12 @@ src/trackformer/models/ops/build*
 src/trackformer/models/ops/dist*
 src/trackformer/models/ops/lib*
 src/trackformer/models/ops/temp*
+
+#____________ Added these too for current training run ______
+
+# Ignore all image formats
+*.jpg
+*.jpeg
+*.png
+*.gif
+

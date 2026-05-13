@@ -1,6 +1,5 @@
 # Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved
 import torch
-
 from .backbone import build_backbone
 from .deformable_detr import DeformableDETR, DeformablePostProcess
 from .deformable_transformer import build_deforamble_transformer
@@ -18,9 +17,8 @@ def build_model(args):
         num_classes = 91
     elif args.dataset == 'coco_panoptic':
         num_classes = 250
-    #elif args.dataset in ['coco_person', 'mot', 'mot_crowdhuman', 'crowdhuman', 'mot_coco_person']: # original
-    elif args.dataset in ['coco_person', 'mot', 'mot_crowdhuman', 'crowdhuman', 'mot_coco_person', 'mot-egotracks-TRAIN']:
-    # after adding egotracks_prototype
+    elif args.dataset in ['coco_person', 'mot', 'mot_crowdhuman', 'crowdhuman', 
+    'mot_coco_person', 'egohumans', 'egohumans_full']:# egohumans and egohumans_full are  added  
         # num_classes = 91
         num_classes = 20
         # num_classes = 1
@@ -130,3 +128,4 @@ def build_model(args):
             postprocessors["panoptic"] = PostProcessPanoptic(is_thing_map, threshold=0.85)
 
     return model, criterion, postprocessors
+

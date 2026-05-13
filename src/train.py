@@ -35,8 +35,8 @@ ex.add_named_config('full_res', 'cfgs/train_full_res.yaml')
 ex.add_named_config('multi_frame', 'cfgs/train_multi_frame.yaml')
 # Added this line for egotracks prototype 
 ex.add_named_config('egotracks_prototype', 'cfgs/train_egotracks_prototype.yaml')
-
-
+# Added this line for egohumans_full 
+ex.add_named_config('egohumans_full', 'cfgs/train_egohumans_full.yaml')
 
 def train(args: Namespace) -> None:
     print(args)
@@ -54,7 +54,7 @@ def train(args: Namespace) -> None:
         # assert args.batch_size == 1
 
         if args.tracking_eval:
-            assert 'mot' in args.dataset
+            assert 'mot' in args.dataset or 'egohumans' in args.dataset
 
     output_dir = Path(args.output_dir)
     if args.output_dir:

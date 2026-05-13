@@ -7,11 +7,13 @@ from typing import Union
 from torch.utils.data import ConcatDataset
 
 from .demo_sequence import DemoSequence
-from .mot_wrapper import MOT17Wrapper, MOT20Wrapper, MOTS20Wrapper, EgotracksWrapper
+from .mot_wrapper import MOT17Wrapper, MOT20Wrapper, MOTS20Wrapper
+from .egohumans_wrapper import EgohumansWrapper
+from .egohumans_full_wrapper import EgohumansFullWrapper # added  to handle Egohumans_full dataset
 
 DATASETS = {}
 
-# Fill all available datasets, change here to modify / add new datasets.
+# ── MOT17 ─────────────────────────────────────────────────────────────────────
 for split in ['TRAIN', 'TEST', 'ALL', '01', '02', '03', '04', '05',
               '06', '07', '08', '09', '10', '11', '12', '13', '14']:
     for dets in ['DPM', 'FRCNN', 'SDP', 'ALL']:
@@ -21,77 +23,129 @@ for split in ['TRAIN', 'TEST', 'ALL', '01', '02', '03', '04', '05',
         DATASETS[name] = (
             lambda kwargs, split=split, dets=dets: MOT17Wrapper(split, dets, **kwargs))
 
-
-for split in ['TRAIN', 'TEST', 'ALL', '01', '02', '03', '04', '05',
-              '06', '07', '08']:
+# ── MOT20 ─────────────────────────────────────────────────────────────────────
+for split in ['TRAIN', 'TEST', 'ALL', '01', '02', '03', '04', '05', '06', '07', '08']:
     name = f'MOT20-{split}'
     DATASETS[name] = (
         lambda kwargs, split=split: MOT20Wrapper(split, **kwargs))
 
-
+# ── MOTS20 ────────────────────────────────────────────────────────────────────
 for split in ['TRAIN', 'TEST', 'ALL', '01', '02', '05', '06', '07', '09', '11', '12']:
     name = f'MOTS20-{split}'
     DATASETS[name] = (
         lambda kwargs, split=split: MOTS20Wrapper(split, **kwargs))
 
+# ── EgoHumans (subset) ────────────────────────────────────────────────────────
+for split in ['TRAIN', 'VAL', 'TEST', 'ALL']:
+    name = f'Egohumans-{split}'
+    DATASETS[name] = (
+        lambda kwargs, split=split: EgohumansWrapper(split, **kwargs))
+
+# Individual sequences for subset
+egohuman_seqs = [
+    'fencing_004_fencing_aria01_rgb', 'fencing_004_fencing_aria02_rgb',
+    'fencing_004_fencing_aria03_rgb', 'legoassemble_002_legoassemble_aria01_rgb',
+    'legoassemble_002_legoassemble_aria02_rgb', 'legoassemble_002_legoassemble_aria03_rgb',
+    'tagging_004_tagging_aria01_rgb', 'tagging_004_tagging_aria02_rgb',
+    'tagging_004_tagging_aria03_rgb', 'tagging_004_tagging_aria04_rgb',
+    'fencing_013_fencing_aria01_rgb', 'fencing_013_fencing_aria03_rgb',
+    'legoassemble_005_legoassemble_aria01_rgb',
+    'legoassemble_005_legoassemble_aria03_rgb', 'tagging_008_tagging_aria01_rgb',
+    'tagging_008_tagging_aria03_rgb', 'tagging_008_tagging_aria04_rgb',
+    'fencing_014_fencing_aria03_rgb',
+    'legoassemble_006_legoassemble_aria01_rgb', 'legoassemble_006_legoassemble_aria02_rgb',
+    'legoassemble_006_legoassemble_aria03_rgb', 'tagging_013_tagging_aria01_rgb',
+    'tagging_013_tagging_aria02_rgb', 'tagging_013_tagging_aria03_rgb',
+    'tagging_013_tagging_aria04_rgb',
+]
+for seq in egohuman_seqs:
+    DATASETS[seq] = (
+        lambda kwargs, seq=seq: EgohumansWrapper(seq, **kwargs))
+
+# ── EgoHumans Full ────────────────────────────────────────────────────────────
+for split in ['TRAIN', 'VAL', 'TEST', 'ALL']:
+    name = f'Egohumans_full-{split}' ## Modified for egohumans_full
+    DATASETS[name] = (
+        lambda kwargs, split=split: EgohumansFullWrapper(split, **kwargs)) # Modified for egohumans_full
+
+# Individual sequences for full dataset
+egohuman_full_seqs = [
+	    'tagging_001_tagging_aria01_rgb', 'tagging_001_tagging_aria02_rgb',
+            'tagging_001_tagging_aria03_rgb', 'tagging_001_tagging_aria04_rgb',
+            'tagging_002_tagging_aria01_rgb', 'tagging_002_tagging_aria02_rgb',
+            'tagging_002_tagging_aria03_rgb', 'tagging_002_tagging_aria04_rgb',
+            'tagging_003_tagging_aria01_rgb', 'tagging_003_tagging_aria02_rgb',
+            'tagging_003_tagging_aria03_rgb', 'tagging_003_tagging_aria04_rgb',
+            'tagging_004_tagging_aria01_rgb', 'tagging_004_tagging_aria02_rgb',
+            'tagging_004_tagging_aria03_rgb', 'tagging_004_tagging_aria04_rgb',
+            'tagging_005_tagging_aria01_rgb', 'tagging_005_tagging_aria02_rgb',
+            'tagging_005_tagging_aria03_rgb', 'tagging_005_tagging_aria04_rgb',
+            'tagging_006_tagging_aria01_rgb', 'tagging_006_tagging_aria02_rgb',
+            'tagging_006_tagging_aria03_rgb', 'tagging_006_tagging_aria04_rgb',
+            'tagging_007_tagging_aria01_rgb', 'tagging_007_tagging_aria02_rgb',
+            'tagging_007_tagging_aria03_rgb', 'tagging_007_tagging_aria04_rgb',
+            'tagging_008_tagging_aria01_rgb', 
+            'tagging_008_tagging_aria03_rgb', 'tagging_008_tagging_aria04_rgb',
+            'tagging_009_tagging_aria01_rgb', 
+            'tagging_009_tagging_aria03_rgb', 'tagging_009_tagging_aria04_rgb',
+            'tagging_010_tagging_aria01_rgb', 
+            'tagging_010_tagging_aria03_rgb', 'tagging_010_tagging_aria04_rgb',
+            'legoassemble_001_legoassemble_aria02_rgb',
+            'legoassemble_003_legoassemble_aria01_rgb', 'legoassemble_003_legoassemble_aria02_rgb',
+            'legoassemble_003_legoassemble_aria03_rgb',
+            'legoassemble_004_legoassemble_aria01_rgb', 'legoassemble_004_legoassemble_aria02_rgb',
+            'legoassemble_005_legoassemble_aria01_rgb', 
+            'legoassemble_005_legoassemble_aria03_rgb',
+            'fencing_001_fencing_aria01_rgb', 'fencing_001_fencing_aria02_rgb',
+            'fencing_001_fencing_aria03_rgb',
+            'fencing_002_fencing_aria01_rgb', 'fencing_002_fencing_aria02_rgb',
+            'fencing_002_fencing_aria03_rgb',
+            'fencing_003_fencing_aria01_rgb', 'fencing_003_fencing_aria02_rgb',
+            'fencing_003_fencing_aria03_rgb',
+            'fencing_004_fencing_aria01_rgb', 'fencing_004_fencing_aria02_rgb',
+            'fencing_004_fencing_aria03_rgb',
+            'fencing_005_fencing_aria01_rgb', 'fencing_005_fencing_aria02_rgb',
+            'fencing_005_fencing_aria03_rgb',
+            'fencing_006_fencing_aria01_rgb', 'fencing_006_fencing_aria02_rgb',
+            'fencing_006_fencing_aria03_rgb',
+            'fencing_008_fencing_aria01_rgb', 'fencing_008_fencing_aria02_rgb',
+            'fencing_008_fencing_aria03_rgb',
+            'fencing_009_fencing_aria01_rgb', 'fencing_009_fencing_aria02_rgb',
+            'fencing_009_fencing_aria03_rgb',
+            'fencing_011_fencing_aria03_rgb',
+            'fencing_014_fencing_aria03_rgb',
+            'tagging_011_tagging_aria01_rgb', 
+            'tagging_011_tagging_aria03_rgb', 'tagging_011_tagging_aria04_rgb',
+            'tagging_012_tagging_aria01_rgb', 'tagging_012_tagging_aria02_rgb',
+            'tagging_012_tagging_aria03_rgb', 'tagging_012_tagging_aria04_rgb',
+            'legoassemble_002_legoassemble_aria01_rgb', 'legoassemble_002_legoassemble_aria02_rgb',
+            'legoassemble_002_legoassemble_aria03_rgb',
+            'fencing_012_fencing_aria01_rgb',
+            'fencing_012_fencing_aria03_rgb',            
+            'fencing_013_fencing_aria01_rgb',
+            'fencing_013_fencing_aria03_rgb' ,
+            'tagging_013_tagging_aria01_rgb', 'tagging_013_tagging_aria02_rgb',
+            'tagging_013_tagging_aria03_rgb', 'tagging_013_tagging_aria04_rgb',
+            'tagging_014_tagging_aria01_rgb', 'tagging_014_tagging_aria02_rgb',
+            'tagging_014_tagging_aria03_rgb', 'tagging_014_tagging_aria04_rgb', 
+            'legoassemble_006_legoassemble_aria01_rgb',   'legoassemble_006_legoassemble_aria02_rgb',
+            'legoassemble_006_legoassemble_aria03_rgb',
+            'fencing_010_fencing_aria01_rgb', 'fencing_010_fencing_aria02_rgb',
+            'fencing_010_fencing_aria03_rgb'
+            ]
+
+for seq in egohuman_full_seqs:
+    DATASETS[seq] = (
+        lambda kwargs, seq=seq: EgohumansFullWrapper(seq, **kwargs))
+
+# ── Demo ──────────────────────────────────────────────────────────────────────
 DATASETS['DEMO'] = (lambda kwargs: [DemoSequence(**kwargs), ])
-
-"""
-#  this part is added to access egotracks data
-# this part was used during training phase
-for split in ['TRAIN', 'VAL', 'TEST']:
-    name = f'mot-egotracks-{split}'  # Added 'mot-' prefix 
-    # Use EgotracksWrapper directly instead of MOT17Wrapper
-    DATASETS[name] = (
-        lambda kwargs, split=split: EgotracksWrapper(split, **kwargs)
-    )
-# egootracks info ends here
-"""
-# this part was added during evaluation phase to handle all egotracks clips
-import  os
-EGOTRACKS_ROOT = 'data/egotracks'
-
-for split in ['TRAIN', 'VAL', 'TEST']:
-    name = f'mot-egotracks-{split}'
-    DATASETS[name] = (
-        lambda kwargs, split=split: EgotracksWrapper(split, **kwargs)
-    )
-
-# We scan both train and test folders to find clip uids
-for subset in ['train', 'test']:
-    subset_path = os.path.join(EGOTRACKS_ROOT, subset)
-    
-    if os.path.exists(subset_path):
-        # Find all subdirectories (these are your ClipUIDs)
-        clip_ids = [f for f in os.listdir(subset_path) 
-                     if os.path.isdir(os.path.join(subset_path, f))]
-        
-        for cid in clip_ids:
-            # Map the ClipUID directly to a dataset name
-            # We pass subset.upper() so the Wrapper knows if it's TRAIN or TEST
-            DATASETS[cid] = (
-                lambda kwargs, cid=cid, subset=subset: EgotracksWrapper(
-                    subset.upper(), seq=cid, **kwargs)
-            )
-
-#ends here
 
 
 class TrackDatasetFactory:
-    """A central class to manage the individual dataset loaders.
-
-    This class contains the datasets. Once initialized the individual parts (e.g. sequences)
-    can be accessed.
-    """
-
+    """A central class to manage the individual dataset loaders."""
 
     def __init__(self, datasets: Union[str, list], **kwargs) -> None:
-        """Initialize the corresponding dataloader.
-
-        Keyword arguments:
-        datasets --  the name of the dataset or list of dataset names
-        kwargs -- arguments used to call the datasets
-        """
         if isinstance(datasets, str):
             datasets = [datasets]
 
@@ -102,7 +156,9 @@ class TrackDatasetFactory:
             if self._data is None:
                 self._data = DATASETS[dataset](kwargs)
             else:
-                self._data = ConcatDataset([self._data, DATASETS[dataset](kwargs)])
+                self._data = ConcatDataset(
+                    [self._data, DATASETS[dataset](kwargs)]
+                )
 
     def __len__(self) -> int:
         return len(self._data)

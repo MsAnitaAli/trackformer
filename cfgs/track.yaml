@@ -46,7 +46,7 @@ tracker_cfg:
     reid_score_thresh: 0.4
     reid_greedy_matching: false
 
-# Added this during evaluation 
+# Added this during evaluation for egotracks
 egotracks_prototype:
     dataset_name: mot-egotracks-TRAIN
     data_root_dir: data/egotracks
@@ -57,3 +57,6 @@ egotracks_prototype:
     tracker_cfg:
         detection_obj_score_thresh: 0.4
         track_obj_score_thresh: 0.4
+
+# Added for egohumans training
+

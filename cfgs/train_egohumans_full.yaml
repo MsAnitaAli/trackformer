@@ -1,0 +1,29 @@
+# ── CHANGED: dataset name for egohumans_full ──────────────────────────────────
+dataset: egohumans_full
+
+# ── CHANGED:  ─────
+#split names matching your egohumans_full COCO json filenames and folder where falttened data is present. 
+# according to mot.py, both of these should be same 
+train_split: train_coco 
+val_split: val_coco     
+
+# ── CHANGED: paths pointing to Egohumans_full_MOT ─────────────────────────────
+mot_path_train: data/Egohumans_full_MOT
+mot_path_val: data/Egohumans_full_MOT
+
+# ── From where to resume if disruption occurs   ───────────────
+# resume directly from MOT20 pretrained , bcuz we have not trained onegohumans_yet
+resume: 'models/mot20_crowdhuman_deformable_multi_frame/checkpoint_epoch_50.pth'
+# after power failure we will mention desired  resume point from terminal
+
+# ── CHANGED: output goes to its own folder ────────────────────────────────────
+output_dir: 'models/egohumans_full'
+
+# _____ CHANGED:
+#tracking_eval: false # not needed i handled via modifyinh train.py
+
+
+# ── Hyperparameters — adjust based on your GPU and dataset size ───────────────
+epochs: 50
+lr_drop: 40
+batch_size: 1   # I will increase to 2 if VRAM allows

@@ -44,7 +44,7 @@ class MOT17Sequence(Dataset):
 
         self._train_folders = os.listdir(os.path.join(self._data_dir, 'train'))
         self._test_folders = os.listdir(os.path.join(self._data_dir, 'test'))
-
+        
         self.transforms = Compose(make_coco_transforms('val', img_transform, overflow_boxes=True))
 
         self.data = []
@@ -53,6 +53,7 @@ class MOT17Sequence(Dataset):
             full_seq_name = seq_name
             if self._dets is not None:
                 full_seq_name = f"{seq_name}-{dets}"
+
             assert full_seq_name in self._train_folders or full_seq_name in self._test_folders, \
                 'Image set does not exist: {}'.format(full_seq_name)
 
@@ -98,7 +99,8 @@ class MOT17Sequence(Dataset):
                     y2 = y1 + float(row[5]) - 1 #  original
                     score = float(row[6])
                     bbox = np.array([x1, y1, x2, y2, score], dtype=np.float32)
-                    dets[int(float(row[0]))].append(bbox)
+
+                    dets[int(row[0])].append(bbox)# original
 
         # accumulate total
         img_dir = osp.join(
@@ -136,29 +138,21 @@ class MOT17Sequence(Dataset):
                 if int(row[6]) == 1 and int(row[7]) == 1 and float(row[8]) >= self._vis_threshold:
                     # Make pixel indexes 0-based, should already be 0-based (or not)
                     # original code
-                    """
+                    
                     x1 = int(row[2]) - 1
                     y1 = int(row[3]) - 1
                     # This -1 accounts for the width (width of 1 x1=x2)
                     x2 = x1 + int(row[4]) - 1
                     y2 = y1 + int(row[5]) - 1
-                    """
-                    # these lines are added to handle float value. in egotracks eval
-                    x1 = int(float(row[2])) - 1
-                    y1 = int(float(row[3])) - 1
-                    x2 = x1 + int(float(row[4])) - 1
-                    y2 = y1 + int(float(row[5])) - 1
+                    
                     bbox = np.array([x1, y1, x2, y2], dtype=np.float32)
 
-                    # frame_id = int(row[0])
-                    # track_id = int(row[1])
-                    #added for egotracks
-                    frame_id = int(float(row[0]))
-                    track_id = int(float(row[1]))
-
-                    boxes[frame_id][track_id] = bbox
-                    visibility[frame_id][track_id] = float(row[8])
-
+                    frame_id = int(row[0])
+                    track_id = int(row[1])
+                    
+                    boxes[frame_id][track_id] = bbox # original code
+                    visibility[frame_id][track_id] = float(row[8]) # original code
+                    
         return boxes, visibility
 
     def get_seq_path(self) -> str:
@@ -166,6 +160,7 @@ class MOT17Sequence(Dataset):
         full_seq_name = self._seq_name
         if self._dets is not None:
             full_seq_name = f"{self._seq_name}-{self._dets}"
+           
 
         if full_seq_name in self._train_folders:
             return osp.join(self._data_dir, 'train', full_seq_name)

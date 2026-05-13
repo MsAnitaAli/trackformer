@@ -1,0 +1,113 @@
+python src/evaluate_hota_result.py --split test
+[OK] numpy 1.23.5
+[OK] trackeval found.
+
+[INFO] Running evaluation for Egohumans-TEST...
+
+CLEAR Config:
+METRICS              : ['HOTA', 'CLEAR', 'Identity'] 
+THRESHOLD            : 0.5                           
+PRINT_CONFIG         : True                          
+
+Identity Config:
+METRICS              : ['HOTA', 'CLEAR', 'Identity'] 
+THRESHOLD            : 0.5                           
+PRINT_CONFIG         : True                          
+
+Eval Config:
+USE_PARALLEL         : False                         
+NUM_PARALLEL_CORES   : 8                             
+BREAK_ON_ERROR       : True                          
+RETURN_ON_ERROR      : False                         
+LOG_ON_ERROR         : /home/nccs/anaconda3/envs/trackformer_gpu/lib/python3.9/site-packages/error_log.txt
+PRINT_RESULTS        : True                          
+PRINT_ONLY_COMBINED  : False                         
+PRINT_CONFIG         : True                          
+TIME_PROGRESS        : True                          
+DISPLAY_LESS_PROGRESS : True                          
+OUTPUT_SUMMARY       : True                          
+OUTPUT_EMPTY_CLASSES : True                          
+OUTPUT_DETAILED      : True                          
+PLOT_CURVES          : True                          
+OUTPUT_FOLDER        : /home/nccs/GithubClones/Trackformer_forked/trackformer/results/trackeval_workspace/output
+
+MotChallenge2DBox Config:
+GT_FOLDER            : /home/nccs/GithubClones/Trackformer_forked/trackformer/results/trackeval_workspace/gt/mot_challenge
+TRACKERS_FOLDER      : /home/nccs/GithubClones/Trackformer_forked/trackformer/results/trackeval_workspace/trackers/mot_challenge/Egohumans-TEST
+OUTPUT_FOLDER        : None                          
+TRACKERS_TO_EVAL     : ['trackformer_mot20_baseline']
+CLASSES_TO_EVAL      : ['pedestrian']                
+BENCHMARK            : Egohumans-TEST                
+SPLIT_TO_EVAL        : Egohumans-TEST                
+INPUT_AS_ZIP         : False                         
+PRINT_CONFIG         : True                          
+DO_PREPROC           : False                         
+TRACKER_SUB_FOLDER   : data                          
+OUTPUT_SUB_FOLDER    :                               
+TRACKER_DISPLAY_NAMES : None                          
+SEQMAP_FOLDER        : None                          
+SEQMAP_FILE          : /home/nccs/GithubClones/Trackformer_forked/trackformer/results/trackeval_workspace/gt/mot_challenge/Egohumans-TEST/seqmaps/Egohumans-TEST.txt
+SEQ_INFO             : {'fencing_014_fencing_aria03_rgb': 331, 'legoassemble_006_legoassemble_aria01_rgb': 241, 'legoassemble_006_legoassemble_aria02_rgb': 241, 'legoassemble_006_legoassemble_aria03_rgb': 241, 'tagging_013_tagging_aria01_rgb': 168, 'tagging_013_tagging_aria02_rgb': 168, 'tagging_013_tagging_aria03_rgb': 168, 'tagging_013_tagging_aria04_rgb': 168}
+GT_LOC_FORMAT        : {gt_folder}/Egohumans-TEST/{seq}/gt/gt.txt
+SKIP_SPLIT_FOL       : True                          
+TRACKER_EXT          : .txt                          
+
+Evaluating 1 tracker(s) on 8 sequence(s) for 1 class(es) on MotChallenge2DBox dataset using the following metrics: HOTA, CLEAR, Identity, Count
+
+
+Evaluating trackformer_mot20_baseline
+
+1 eval_sequence(fencing_014_fencing_aria03_rgb, trackformer_mot20_baseline) 0.1223 sec
+2 eval_sequence(legoassemble_006_legoassemble_aria01_rgb, trackformer_mot20_baseline) 0.0763 sec
+3 eval_sequence(legoassemble_006_legoassemble_aria02_rgb, trackformer_mot20_baseline) 0.0847 sec
+4 eval_sequence(legoassemble_006_legoassemble_aria03_rgb, trackformer_mot20_baseline) 0.0854 sec
+5 eval_sequence(tagging_013_tagging_aria01_rgb, trackformer_mot20_baseline) 0.0624 sec
+6 eval_sequence(tagging_013_tagging_aria02_rgb, trackformer_mot20_baseline) 0.0619 sec
+7 eval_sequence(tagging_013_tagging_aria03_rgb, trackformer_mot20_baseline) 0.0606 sec
+8 eval_sequence(tagging_013_tagging_aria04_rgb, trackformer_mot20_baseline) 0.0626 sec
+
+All sequences for trackformer_mot20_baseline finished in 0.62 seconds
+
+HOTA: trackformer_mot20_baseline-pedestrianHOTA      DetA      AssA      DetRe     DetPr     AssRe     AssPr     LocA      OWTA      HOTA(0)   LocA(0)   HOTALocA(0)
+fencing_014_fencing_aria03_rgb     44.338    26.693    73.727    78.359    27.36     77.886    78.599    80.891    75.883    58.555    76.826    44.986    
+legoassemble_006_legoassemble_aria01_rgb45.921    41.8      50.496    68.558    46.205    53.259    73.268    79.345    58.82     60.884    74.567    45.399    
+legoassemble_006_legoassemble_aria02_rgb54.312    59.323    49.766    66.346    66.484    53.209    70.045    75.331    57.413    83.383    68.155    56.83     
+legoassemble_006_legoassemble_aria03_rgb46.78     41.78     52.49     67.541    45.75     56.558    70.877    77.115    59.537    66.637    69.994    46.641    
+tagging_013_tagging_aria01_rgb     70.33     73.549    67.29     79.796    76.946    72.546    77.846    81.63     73.253    90.589    78.616    71.218    
+tagging_013_tagging_aria02_rgb     45.756    69.989    29.968    77.217    75.813    33.512    70.617    82.752    48.103    58.212    78.983    45.978    
+tagging_013_tagging_aria03_rgb     65.168    63.879    66.493    80.184    67.011    71.147    77.956    82.532    72.967    84.294    78.764    66.394    
+tagging_013_tagging_aria04_rgb     70.137    73.133    67.286    78.018    76.949    70.005    79.347    80.747    72.411    92.428    77.418    71.556    
+COMBINED                           54.856    52.322    57.57     74.412    56.111    61.42     75.664    79.93     65.442    73.613    75.33     55.453    
+
+CLEAR: trackformer_mot20_baseline-pedestrianMOTA      MOTP      MODA      CLR_Re    CLR_Pr    MTR       PTR       MLR       sMOTA     CLR_TP    CLR_FN    CLR_FP    IDSW      MT        PT        ML        Frag      
+fencing_014_fencing_aria03_rgb     -88.218   77.295    -88.218   99.094    34.599    100       0         0         -110.72   328       3         620       0         1         0         0         1         
+legoassemble_006_legoassemble_aria01_rgb27.273    75.598    28.247    88.312    59.519    100       0         0         5.7233    272       36        185       3         2         0         0         4         
+legoassemble_006_legoassemble_aria02_rgb73.029    70.818    73.237    86.515    86.694    100       0         0         47.782    417       65        64        1         2         0         0         15        
+legoassemble_006_legoassemble_aria03_rgb29.805    72.608    30.641    89.136    60.377    100       0         0         5.3885    320       39        210       3         2         0         0         6         
+tagging_013_tagging_aria01_rgb     93.464    79.101    93.682    98.693    95.168    100       0         0         72.839    453       6         23        1         3         0         0         3         
+tagging_013_tagging_aria02_rgb     82.407    80.315    84.722    93.287    91.591    100       0         0         64.044    403       29        37        10        3         0         0         11        
+tagging_013_tagging_aria03_rgb     71.368    80.742    71.795    95.726    80        100       0         0         52.932    224       10        56        1         3         0         0         3         
+tagging_013_tagging_aria04_rgb     94.444    77.738    94.643    98.016    96.673    100       0         0         72.624    494       10        17        1         3         0         0         3         
+COMBINED                           54.005    76.733    54.648    93.631    70.604    100       0         0         32.219    2911      198       1212      20        19        0         0         46        
+
+Identity: trackformer_mot20_baseline-pedestrianIDF1      IDR       IDP       IDTP      IDFN      IDFP      
+fencing_014_fencing_aria03_rgb     51.29     99.094    34.599    328       3         620       
+legoassemble_006_legoassemble_aria01_rgb59.608    74.026    49.891    228       80        229       
+legoassemble_006_legoassemble_aria02_rgb72.066    71.992    72.141    347       135       134       
+legoassemble_006_legoassemble_aria03_rgb59.843    74.095    50.189    266       93        264       
+tagging_013_tagging_aria01_rgb     89.84     91.503    88.235    420       39        56        
+tagging_013_tagging_aria02_rgb     53.899    54.398    53.409    235       197       205       
+tagging_013_tagging_aria03_rgb     82.101    90.171    75.357    211       23        69        
+tagging_013_tagging_aria04_rgb     90.64     91.27     90.02     460       44        51        
+COMBINED                           68.999    80.251    60.514    2495      614       1628      
+
+Count: trackformer_mot20_baseline-pedestrianDets      GT_Dets   IDs       GT_IDs    
+fencing_014_fencing_aria03_rgb     948       331       6         1         
+legoassemble_006_legoassemble_aria01_rgb457       308       7         2         
+legoassemble_006_legoassemble_aria02_rgb481       482       4         2         
+legoassemble_006_legoassemble_aria03_rgb530       359       8         2         
+tagging_013_tagging_aria01_rgb     476       459       4         3         
+tagging_013_tagging_aria02_rgb     440       432       14        3         
+tagging_013_tagging_aria03_rgb     280       234       6         3         
+tagging_013_tagging_aria04_rgb     511       504       5         3         
+COMBINED                           4123      3109      54        19   

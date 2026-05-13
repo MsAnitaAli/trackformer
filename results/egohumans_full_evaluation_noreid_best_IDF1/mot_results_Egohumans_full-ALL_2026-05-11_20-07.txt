@@ -1,0 +1,119 @@
+Dataset  : Egohumans_full-ALL
+Timestamp: 2026-05-11_20-07
+Checkpoint: models/egohumans_full/checkpoint_best_IDF1.pth
+
+                                                IDF1    IDP    IDR   Rcll   Prcn  GT  MT PT ML   FP   FN IDs   FM   MOTA  MOTP IDt IDa IDm
+tagging_001_tagging_aria01_rgb-None            23.9%  25.5%  22.4%  86.6%  98.6%   3   3  0  0   19  206  33   33  83.3% 0.097   6  27   0
+tagging_001_tagging_aria02_rgb-None            41.0%  41.3%  40.8%  96.1%  97.2%   3   3  0  0   41   59  23   22  91.8% 0.103   1  22   0
+tagging_001_tagging_aria03_rgb-None            36.9%  37.4%  36.5%  96.0%  98.2%   3   3  0  0   16   37  23   14  91.7% 0.117   2  21   0
+tagging_001_tagging_aria04_rgb-None            32.3%  33.0%  31.7%  94.5%  98.5%   3   3  0  0   20   76  21   24  91.6% 0.122   2  19   0
+tagging_002_tagging_aria01_rgb-None            53.0%  53.4%  52.7%  97.5%  98.9%   3   3  0  0    3    7   8    3  93.6% 0.094   0   8   0
+tagging_002_tagging_aria02_rgb-None            63.8%  65.4%  62.2%  93.7%  98.6%   3   3  0  0    8   38  10   10  90.7% 0.093   3   6   0
+tagging_002_tagging_aria03_rgb-None            71.4%  72.5%  70.3%  95.9%  98.8%   3   3  0  0    5   18   6    4  93.3% 0.122   0   6   0
+tagging_002_tagging_aria04_rgb-None            76.8%  79.0%  74.6%  92.3%  97.7%   3   3  0  0   14   49   5    9  89.3% 0.102   0   5   0
+tagging_003_tagging_aria01_rgb-None            38.9%  40.5%  37.3%  91.4%  99.2%   3   3  0  0    6   69  12   15  89.1% 0.098   1  11   0
+tagging_003_tagging_aria02_rgb-None            48.6%  49.8%  47.5%  94.9%  99.4%   3   3  0  0    4   34  18   13  91.7% 0.069   1  17   0
+tagging_003_tagging_aria03_rgb-None            73.2%  74.7%  71.6%  94.7%  98.8%   3   3  0  0    9   41   7    8  92.7% 0.109   0   7   0
+tagging_003_tagging_aria04_rgb-None            49.2%  50.3%  48.1%  92.6%  96.8%   3   3  0  0   15   36  11    8  87.2% 0.087   0  11   0
+tagging_004_tagging_aria01_rgb-None            59.0%  60.6%  57.6%  94.1%  99.0%   3   3  0  0    3   19   9    7  90.4% 0.093   1   8   0
+tagging_004_tagging_aria02_rgb-None            52.0%  52.1%  51.9%  98.7%  99.2%   3   3  0  0    2    3   6    3  95.4% 0.075   0   6   0
+tagging_004_tagging_aria03_rgb-None            55.9%  58.1%  53.8%  91.9%  99.2%   3   3  0  0    2   21   9    6  87.7% 0.134   2   8   1
+tagging_004_tagging_aria04_rgb-None            73.8%  76.1%  71.6%  86.9%  92.3%   3   2  1  0   16   29   5    5  77.5% 0.115   0   5   0
+tagging_005_tagging_aria01_rgb-None            26.0%  27.2%  24.9%  89.2%  97.6%   3   3  0  0   23  113  26   22  84.6% 0.094   5  21   0
+tagging_005_tagging_aria02_rgb-None            57.5%  58.0%  57.1%  98.0%  99.4%   3   3  0  0    5   17  12    9  95.9% 0.083   0  12   0
+tagging_005_tagging_aria03_rgb-None            37.1%  39.3%  35.2%  88.9%  99.2%   3   2  1  0    6   91  14   11  86.4% 0.108   1  13   0
+tagging_005_tagging_aria04_rgb-None            41.6%  43.7%  39.7%  89.8%  98.8%   3   3  0  0   13  118  14   20  87.4% 0.110   3  11   0
+tagging_006_tagging_aria01_rgb-None            50.9%  50.9%  50.9%  99.1%  99.1%   3   3  0  0    6    6  10    4  96.6% 0.069   0  10   0
+tagging_006_tagging_aria02_rgb-None            92.5%  93.8%  91.3%  97.1%  99.7%   3   3  0  0    3   31   6   10  96.2% 0.097   1   5   0
+tagging_006_tagging_aria03_rgb-None            47.8%  49.1%  46.6%  93.7%  98.7%   3   3  0  0   12   62  13   12  91.2% 0.096   3  10   0
+tagging_006_tagging_aria04_rgb-None            42.6%  43.3%  41.9%  94.9%  98.1%   3   3  0  0   15   41  16   11  91.1% 0.092   2  14   0
+tagging_007_tagging_aria01_rgb-None            25.2%  25.7%  24.7%  94.5%  98.5%   3   3  0  0   23   88  32   23  91.0% 0.099   2  30   0
+tagging_007_tagging_aria02_rgb-None            50.3%  50.7%  49.8%  97.0%  98.8%   3   3  0  0   19   50  22   17  94.5% 0.091   1  21   0
+tagging_007_tagging_aria03_rgb-None            27.5%  28.6%  26.4%  91.7%  99.1%   3   3  0  0   13  123  22   16  89.3% 0.095   0  22   0
+tagging_007_tagging_aria04_rgb-None            31.9%  32.3%  31.5%  96.8%  99.4%   3   3  0  0    8   41  20   15  94.7% 0.090   2  18   0
+tagging_008_tagging_aria01_rgb-None            48.6%  46.6%  50.8%  94.7%  86.9%   2   2  0  0   43   16  10    8  77.1% 0.115   0  10   0
+tagging_008_tagging_aria03_rgb-None            60.6%  58.8%  62.7%  98.0%  91.9%   2   2  0  0   13    3   4    2  86.7% 0.126   0   4   0
+tagging_008_tagging_aria04_rgb-None            61.7%  64.1%  59.4%  91.5%  98.8%   2   2  0  0    4   30   7    6  88.5% 0.106   1   6   0
+tagging_009_tagging_aria01_rgb-None            35.6%  35.2%  36.1%  96.0%  93.5%   2   2  0  0   56   33  19   10  87.0% 0.089   1  18   0
+tagging_009_tagging_aria03_rgb-None            39.4%  39.3%  39.5%  98.8%  98.4%   2   2  0  0    8    6   9    5  95.4% 0.083   0   9   0
+tagging_009_tagging_aria04_rgb-None            21.8%  21.6%  22.0%  98.6%  96.6%   2   2  0  0   28   11  12    6  93.7% 0.078   0  12   0
+tagging_010_tagging_aria01_rgb-None            21.9%  20.7%  23.3%  94.8%  84.5%   2   2  0  0   83   25  15   11  74.2% 0.094   0  15   0
+tagging_010_tagging_aria03_rgb-None            20.8%  21.1%  20.5%  96.0%  98.8%   2   2  0  0    7   23  15   12  92.3% 0.082   1  14   0
+tagging_010_tagging_aria04_rgb-None            18.9%  18.6%  19.2%  95.4%  92.1%   2   2  0  0   50   28  19   11  84.2% 0.079   2  17   0
+legoassemble_001_legoassemble_aria02_rgb-None  59.6%  58.4%  60.8%  95.8%  92.1%   2   2  0  0   89   45  11   14  86.5% 0.101   1  10   0
+legoassemble_003_legoassemble_aria01_rgb-None  30.1%  29.9%  30.2%  97.4%  96.6%   2   2  0  0   27   20  17    6  91.8% 0.122   0  17   0
+legoassemble_003_legoassemble_aria02_rgb-None  69.4%  69.9%  68.9%  97.2%  98.7%   2   2  0  0   14   30   9    7  95.1% 0.109   2   7   0
+legoassemble_003_legoassemble_aria03_rgb-None  55.2%  54.7%  55.7%  96.5%  94.7%   2   2  0  0   31   20   7    3  89.8% 0.110   0   7   0
+legoassemble_004_legoassemble_aria01_rgb-None  48.7%  49.3%  48.1%  96.3%  98.5%   2   2  0  0   13   33   9    7  93.8% 0.112   1   8   0
+legoassemble_004_legoassemble_aria02_rgb-None  87.4%  86.9%  87.9%  99.2%  98.2%   2   2  0  0   19    8   2    5  97.2% 0.098   0   2   0
+legoassemble_005_legoassemble_aria01_rgb-None  56.7%  58.0%  55.4%  94.1%  98.5%   2   2  0  0   10   42   8    6  91.6% 0.140   1   7   0
+legoassemble_005_legoassemble_aria03_rgb-None  56.4%  61.2%  52.3%  84.3%  98.6%   2   1  1  0    7   91   5    3  82.2% 0.115   0   5   0
+fencing_001_fencing_aria01_rgb-None            77.6%  77.5%  77.6%  99.5%  99.4%   2   2  0  0    7    6   3    3  98.6% 0.073   0   3   0
+fencing_001_fencing_aria02_rgb-None           100.0% 100.0% 100.0% 100.0% 100.0%   1   1  0  0    0    0   0    0 100.0% 0.061   0   0   0
+fencing_001_fencing_aria03_rgb-None            76.6%  77.2%  76.1%  98.4%  99.8%   2   2  0  0    2   18   4    4  97.8% 0.099   0   4   0
+fencing_002_fencing_aria01_rgb-None            77.4%  77.4%  77.3%  99.9% 100.0%   2   2  0  0    0    1   4    1  99.5% 0.061   0   4   0
+fencing_002_fencing_aria02_rgb-None            59.2%  59.1%  59.3%  99.7%  99.4%   2   2  0  0    5    2   3    1  98.7% 0.066   1   2   0
+fencing_002_fencing_aria03_rgb-None            93.5%  93.6%  93.4%  99.8% 100.0%   2   2  0  0    0    2   2    2  99.7% 0.095   0   2   0
+fencing_003_fencing_aria01_rgb-None            97.2%  96.4%  98.0% 100.0%  98.4%   1   1  0  0   10    0   1    0  98.2% 0.040   0   1   0
+fencing_003_fencing_aria02_rgb-None           100.0% 100.0% 100.0% 100.0% 100.0%   2   2  0  0    0    0   0    0 100.0% 0.071   0   0   0
+fencing_003_fencing_aria03_rgb-None            67.6%  67.8%  67.3%  99.1%  99.8%   2   2  0  0    2   11   3    2  98.7% 0.084   1   2   0
+fencing_004_fencing_aria01_rgb-None            94.5%  94.6%  94.4%  99.0%  99.2%   2   2  0  0    4    5   3    2  97.7% 0.058   0   3   0
+fencing_004_fencing_aria02_rgb-None           100.0% 100.0% 100.0% 100.0% 100.0%   2   2  0  0    0    0   0    0 100.0% 0.060   0   0   0
+fencing_004_fencing_aria03_rgb-None            83.9%  83.9%  83.8%  99.5%  99.7%   2   2  0  0    2    3   4    1  98.5% 0.103   1   3   0
+fencing_005_fencing_aria01_rgb-None            81.1%  81.2%  81.0%  99.5%  99.7%   2   2  0  0    3    6   4    4  98.9% 0.058   0   4   0
+fencing_005_fencing_aria02_rgb-None            56.4%  56.7%  56.2%  98.9%  99.8%   2   2  0  0    1    6   6    3  97.7% 0.056   0   6   0
+fencing_005_fencing_aria03_rgb-None            46.9%  47.2%  46.6%  98.6%  99.9%   2   2  0  0    1   16   6    5  98.0% 0.082   1   5   0
+fencing_006_fencing_aria01_rgb-None            54.9%  54.9%  54.9%  99.6%  99.7%   2   2  0  0    3    5   3    2  99.1% 0.071   0   3   0
+fencing_006_fencing_aria02_rgb-None            99.7%  99.7%  99.7%  99.7%  99.7%   1   1  0  0    2    2   0    2  99.3% 0.045   0   0   0
+fencing_006_fencing_aria03_rgb-None            64.4%  65.7%  63.1%  95.8%  99.8%   2   2  0  0    2   51   7    7  95.0% 0.098   0   7   0
+fencing_008_fencing_aria01_rgb-None            71.9%  72.2%  71.5%  99.0%  99.9%   2   2  0  0    1   11   3    3  98.6% 0.064   0   3   0
+fencing_008_fencing_aria02_rgb-None            89.8%  89.7%  90.0%  99.7%  99.4%   2   2  0  0    4    2   3    1  98.5% 0.059   0   3   0
+fencing_008_fencing_aria03_rgb-None            76.8%  76.8%  76.7%  99.8%  99.9%   2   2  0  0    1    2   1    2  99.7% 0.062   0   1   0
+fencing_009_fencing_aria01_rgb-None            69.8%  69.9%  69.8%  97.7%  97.9%   2   2  0  0   12   13   5    3  94.7% 0.059   0   5   0
+fencing_009_fencing_aria02_rgb-None            82.5%  82.6%  82.4%  99.5%  99.7%   2   2  0  0    2    3   2    2  98.8% 0.062   0   2   0
+fencing_009_fencing_aria03_rgb-None            60.9%  60.9%  61.0%  99.9%  99.7%   2   2  0  0    2    1   3    0  99.2% 0.054   0   3   0
+fencing_011_fencing_aria03_rgb-None            67.7%  66.9%  68.5% 100.0%  97.7%   1   1  0  0   14    0   1    0  97.5% 0.057   0   1   0
+fencing_014_fencing_aria03_rgb-None            81.8%  69.2% 100.0% 100.0%  69.2%   1   1  0  0  147    0   0    0  55.6% 0.046   0   0   0
+tagging_011_tagging_aria01_rgb-None            19.2%  17.8%  21.0%  92.0%  77.8%   2   2  0  0  272   83  29   19  63.0% 0.090   0  29   0
+tagging_011_tagging_aria03_rgb-None            51.9%  48.5%  55.8%  96.0%  83.4%   2   2  0  0  260   55   9    7  76.2% 0.083   0   9   0
+tagging_011_tagging_aria04_rgb-None            23.3%  21.1%  26.1%  97.2%  78.7%   2   2  0  0  270   29  24   10  68.5% 0.085   0  23   0
+tagging_012_tagging_aria01_rgb-None            45.7%  48.0%  43.7%  89.7%  98.5%   3   2  1  0    6   45   9    7  86.2% 0.098   2   7   0
+tagging_012_tagging_aria02_rgb-None            78.1%  78.6%  77.7%  94.7%  95.8%   3   3  0  0   18   23   3    9  89.8% 0.110   0   3   0
+tagging_012_tagging_aria03_rgb-None            53.9%  55.1%  52.8%  95.1%  99.3%   3   3  0  0    2   15   6    6  92.5% 0.108   0   6   0
+tagging_012_tagging_aria04_rgb-None            83.9%  85.1%  82.8%  97.3% 100.0%   3   3  0  0    0   15   2    2  96.9% 0.118   0   2   0
+legoassemble_002_legoassemble_aria01_rgb-None  36.1%  37.0%  35.3%  91.1%  95.6%   2   2  0  0   31   66  10   14  85.6% 0.184   0  10   0
+legoassemble_002_legoassemble_aria02_rgb-None  59.4%  58.1%  60.9%  90.9%  86.7%   2   2  0  0   89   58   5    5  76.2% 0.164   0   5   0
+legoassemble_002_legoassemble_aria03_rgb-None  38.9%  41.6%  36.5%  74.0%  84.5%   2   1  1  0   75  144   9   14  58.8% 0.189   1   8   0
+fencing_012_fencing_aria01_rgb-None            40.3%  30.0%  61.4%  99.1%  48.5%   1   1  0  0  475    4   1    3  -6.4% 0.148   0   1   0
+fencing_012_fencing_aria03_rgb-None            51.5%  39.1%  75.3%  96.8%  50.2%   1   1  0  0  416   14   2    1   0.5% 0.093   0   2   0
+fencing_013_fencing_aria01_rgb-None            66.4%  49.9%  99.3%  99.3%  49.9%   1   1  0  0  300    2   0    1  -0.3% 0.127   0   0   0
+fencing_013_fencing_aria03_rgb-None            64.4%  48.4%  96.1%  99.7%  50.2%   1   1  0  0  308    1   2    1   0.0% 0.083   0   2   0
+tagging_013_tagging_aria01_rgb-None            93.3%  93.4%  93.2%  99.1%  99.3%   3   3  0  0    3    4   1    4  98.3% 0.089   0   1   0
+tagging_013_tagging_aria02_rgb-None            56.3%  58.0%  54.6%  93.1%  98.8%   3   3  0  0    5   30   9    7  89.8% 0.081   1   8   0
+tagging_013_tagging_aria03_rgb-None            85.6%  86.1%  85.0%  97.0%  98.3%   3   3  0  0    4    7   2    2  94.4% 0.100   0   2   0
+tagging_013_tagging_aria04_rgb-None            82.4%  85.2%  79.8%  93.3%  99.6%   3   2  1  0    2   34   3    4  92.3% 0.099   0   3   0
+tagging_014_tagging_aria01_rgb-None            43.0%  47.1%  39.5%  80.0%  95.5%   3   1  2  0   18   95  17   16  72.7% 0.098   6  11   0
+tagging_014_tagging_aria02_rgb-None            25.8%  29.2%  23.1%  77.6%  98.1%   3   2  1  0    7  105  15   11  72.9% 0.107   3  13   1
+tagging_014_tagging_aria03_rgb-None            83.1%  87.3%  79.3%  89.8%  98.9%   3   1  2  0    3   30   4    6  87.4% 0.119   1   3   0
+tagging_014_tagging_aria04_rgb-None            50.7%  59.0%  44.4%  71.8%  95.3%   3   1  2  0   21  169   7    7  67.1% 0.127   2   5   0
+legoassemble_006_legoassemble_aria01_rgb-None  73.2%  70.8%  75.6%  96.1%  90.0%   2   2  0  0   33   12   4    4  84.1% 0.165   0   4   0
+legoassemble_006_legoassemble_aria02_rgb-None  77.4%  80.0%  74.9%  90.2%  96.5%   2   2  0  0   16   47   4    7  86.1% 0.187   1   3   0
+legoassemble_006_legoassemble_aria03_rgb-None  73.0%  74.9%  71.3%  86.9%  91.2%   2   1  1  0   30   47   5    6  77.2% 0.192   0   5   0
+fencing_010_fencing_aria01_rgb-None            97.9%  97.5%  98.4% 100.0%  99.1%   1   1  0  0    5    0   1    0  98.9% 0.085   0   1   0
+fencing_010_fencing_aria02_rgb-None            88.2%  88.4%  88.0%  99.0%  99.5%   2   2  0  0    6   11   2    3  98.3% 0.081   0   2   0
+fencing_010_fencing_aria03_rgb-None            31.6%  33.0%  30.4%  91.0%  98.8%   2   2  0  0   12   94  13    8  88.7% 0.071   3  10   0
+OVERALL                                        57.0%  56.8%  57.1%  95.4%  94.9% 228 214 14  0 3745 3392 860  710  89.1% 0.093  73 787   2
+
+INFO - track - Result:                                                    idf1       idp       idr    recall  precision  num_unique_objects  ...  num_fragmentations      mota      motp  num_transfer  num_ascend  num_migrate
+tagging_001_tagging_aria01_rgb-None            0.238868  0.255351  0.224384  0.866407   0.985978                   3  ...                  33  0.832685  0.096818             6          27            0
+tagging_001_tagging_aria02_rgb-None            0.410343  0.412838  0.407877  0.960614   0.972297                   3  ...                  22  0.917891  0.102966             1          22            0
+tagging_001_tagging_aria03_rgb-None            0.369265  0.373602  0.365027  0.959563   0.982103                   3  ...                  14  0.916940  0.116890             2          21            0
+tagging_001_tagging_aria04_rgb-None            0.323270  0.330075  0.316739  0.945166   0.984962                   3  ...                  24  0.915584  0.121600             2          19            0
+tagging_002_tagging_aria01_rgb-None            0.530249  0.534050  0.526502  0.975265   0.989247                   3  ...                   3  0.936396  0.094347             0           8            0
+...                                                 ...       ...       ...       ...        ...                 ...  ...                 ...       ...       ...           ...         ...          ...
+legoassemble_006_legoassemble_aria03_rgb-None  0.730385  0.748538  0.713092  0.869081   0.912281                   2  ...                   6  0.771588  0.192049             0           5            0
+fencing_010_fencing_aria01_rgb-None            0.979223  0.974820  0.983666  1.000000   0.991007                   1  ...                   0  0.989111  0.085111             0           1            0
+fencing_010_fencing_aria02_rgb-None            0.882219  0.884230  0.880218  0.990018   0.994531                   2  ...                   3  0.982759  0.081078             0           2            0
+fencing_010_fencing_aria03_rgb-None            0.316468  0.329886  0.304099  0.910391   0.987590                   2  ...                   8  0.886559  0.071307             3          10            0
+OVERALL                                        0.569687  0.568326  0.571055  0.953850   0.949290                 228  ...                 710  0.891196  0.092867            73         787            2
+

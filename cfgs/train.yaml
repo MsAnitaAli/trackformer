@@ -133,7 +133,9 @@ world_size: 1
 dist_url: env://
 # Visdom params
 # vis_server: http://localhost
-vis_server: ''
-vis_port: 8090
+# vis_server: ''  # this disables vis server completely
+vis_server: http://localhost  # now it sends to visdom
+# vis_port: 8090 # original. on  my system, it gave this port 8097
+vis_port: 8097
 vis_and_log_interval: 50
 no_vis: false

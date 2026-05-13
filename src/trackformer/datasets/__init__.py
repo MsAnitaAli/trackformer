@@ -32,10 +32,10 @@ def build_dataset(split: str, args: Namespace) -> Dataset:
         dataset = build_coco(split, args)
     elif args.dataset == 'coco_person':
         dataset = build_coco(split, args, 'person_keypoints')
-    #elif args.dataset == 'mot': # original 
-    #    dataset = build_mot(split, args)  # original
-    # added this for egotracks 
-    elif args.dataset in ['mot', 'mot-egotracks-TRAIN']:
+    # Added for egohumans____________________
+    elif args.dataset in ('egohumans', 'egohumans_full'):
+        dataset = build_mot(split, args)
+    elif args.dataset == 'mot':
         dataset = build_mot(split, args)
     elif args.dataset == 'crowdhuman':
         dataset = build_crowdhuman(split, args)
@@ -44,10 +44,11 @@ def build_dataset(split: str, args: Namespace) -> Dataset:
     elif args.dataset == 'mot_coco_person':
         dataset = build_mot_coco_person(split, args)
     elif args.dataset == 'coco_panoptic':
-        # to avoid making panopticapi required for coco
         from .coco_panoptic import build as build_coco_panoptic
         dataset = build_coco_panoptic(split, args)
     else:
         raise ValueError(f'dataset {args.dataset} not supported')
 
     return dataset
+
+
