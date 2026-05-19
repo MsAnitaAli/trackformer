@@ -7,6 +7,8 @@ matplotlib>=3.5.0,<3.6.0
 Pillow>=8.0.0,<9.0.0
 # OpenCV is often tricky, let pip try to install a modern version
 opencv-python>=4.5
+# use older trackeval which is compatible with numpy
+trackeval==1.1.0
 # -------------------------------------
 
 # --- ORIGINAL/LOOSENED DEPENDENCIES ---

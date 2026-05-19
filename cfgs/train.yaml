@@ -116,8 +116,7 @@ resume: ''
 resume_shift_neuron: False
 # resume optimization from checkpoint
 resume_optim: false
-# resume Visdom visualization
-resume_vis: false
+
 start_epoch: 1
 eval_only: false
 eval_train: false
@@ -132,10 +131,12 @@ world_size: 1
 # url used to set up distributed training
 dist_url: env://
 # Visdom params
-# vis_server: http://localhost
+# resume Visdom visualization
+resume_vis: true # false - by default
+vis_server: http://localhost # now it sends to visdom 
 # vis_server: ''  # this disables vis server completely
-vis_server: http://localhost  # now it sends to visdom
 # vis_port: 8090 # original. on  my system, it gave this port 8097
 vis_port: 8097
-vis_and_log_interval: 50
-no_vis: false
+vis_and_log_interval: 50 # every 50 iterations, metrics are sent to visdom AND printed to stdout. 
+no_vis: false # means visdom is enabled. If true, it disables all visdom output regardless of vis_server
+

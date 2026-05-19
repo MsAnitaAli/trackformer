@@ -1,0 +1,1 @@
+/home/nccs/GithubClones/Trackformer_forked/trackformer/results/egohumans_full_evaluation_TRAIN_noreid/fencing_006_fencing_aria03_rgb.txt

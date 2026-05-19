@@ -1,7 +1,7 @@
 Dataset  : Egohumans_full-ALL
 Timestamp: 2026-05-11_22-46
 Checkpoint: models/egohumans_full/checkpoint_best_MOTA.pth
-
+OVERALL                                        52.5%  52.3%  52.8%  94.7%  93.9% 228 212 16  0 4556 3888 1081  859  87.0% 0.109 120 955   1
                                                 IDF1    IDP    IDR   Rcll   Prcn  GT  MT PT ML   FP   FN  IDs   FM   MOTA  MOTP IDt IDa IDm
 tagging_001_tagging_aria01_rgb-None            20.5%  21.9%  19.3%  86.0%  97.4%   3   2  1  0   36  216   44   36  80.8% 0.117   9  34   0
 tagging_001_tagging_aria02_rgb-None            29.0%  29.7%  28.3%  93.1%  97.6%   3   3  0  0   34  103   34   24  88.6% 0.120   3  31   0

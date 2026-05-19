@@ -1,7 +1,7 @@
 Dataset  : Egohumans_full-ALL
 Timestamp: 2026-05-12_10-08
 Checkpoint: models/egohumans_full/checkpoint_epoch_50.pth
-
+OVERALL                                        57.8%  57.2%  58.4%  97.4%  95.4% 228 221  7  0 3480 1906 836  566  91.5% 0.083  57 778   1
                                                 IDF1    IDP    IDR   Rcll   Prcn  GT  MT PT ML   FP   FN IDs   FM   MOTA  MOTP IDt IDa IDm
 tagging_001_tagging_aria01_rgb-None            22.0%  22.5%  21.5%  94.6%  99.1%   3   3  0  0   13   84  32   24  91.6% 0.098   4  28   0
 tagging_001_tagging_aria02_rgb-None            42.4%  42.4%  42.4%  98.3%  98.5%   3   3  0  0   23   25  21   12  95.4% 0.090   2  19   0
