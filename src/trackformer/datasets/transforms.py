@@ -453,7 +453,6 @@ class RandomErasing:
 
         return img, target
 
-
 class Normalize:
     def __init__(self, mean, std):
         self.mean = mean
@@ -472,6 +471,41 @@ class Normalize:
             target["boxes"] = boxes
         return image, target
 
+#_______________ Added Egocentric Data Augmentation (branch appearance)_________________________________
+
+class EgocentricAugment:
+    """
+    Egocentric-specific augmentations for Plan B appearance fine-tuning.
+    Applies motion blur and aggressive scale jitter to simulate
+    egocentric camera dynamics.
+    """
+    def __init__(self, motion_blur_prob=0.4, scale_range=(0.5, 2.0)):
+        self.motion_blur_prob = motion_blur_prob
+        self.scale_range = scale_range
+
+    def __call__(self, img, target):
+        import cv2
+        import numpy as np
+
+        # 1. Motion blur — simulates fast head movement
+        if random.random() < self.motion_blur_prob:
+            kernel_size = random.choice([3, 5, 7])
+            kernel = np.zeros((kernel_size, kernel_size))
+            kernel[kernel_size // 2, :] = 1.0 / kernel_size
+            img_np = np.array(img)
+            img_np = cv2.filter2D(img_np, -1, kernel)
+            img = PIL.Image.fromarray(img_np)
+
+        # 2. Aggressive scale jitter — simulates proximity variation
+        scale = random.uniform(*self.scale_range)
+        w, h = img.size
+        new_w = max(1, int(w * scale))
+        new_h = max(1, int(h * scale))
+        img, target = resize(img, target, (new_h, new_w))
+
+        return img, target
+
+# _________________ ends here____________________________
 
 class Compose:
     def __init__(self, transforms):

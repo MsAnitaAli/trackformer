@@ -147,6 +147,13 @@ def build_mot(image_set, args):
 
     transforms, norm_transforms = make_coco_transforms(
         image_set, args.img_transform, args.overflow_boxes)
+    #_________________________ Added Egocentric Data Augmentation (branch appearance)_________________
+    if image_set == 'train' and getattr(args, 'ego_augment', False):
+        from . transforms import EgocentricAugment
+        ego_aug = EgocentricAugment(motion_blur_prob=0.4, scale_range=(0.5, 2.0))
+        transforms = T.Compose([ego_aug, transforms])   
+    
+    # ___________________Ends here ________________________________________________
 
     dataset = MOT(
         img_folder, ann_file, transforms, norm_transforms,

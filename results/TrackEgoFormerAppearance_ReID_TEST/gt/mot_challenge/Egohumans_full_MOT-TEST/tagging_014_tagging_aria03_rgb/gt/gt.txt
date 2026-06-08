@@ -1,0 +1,1 @@
+/home/nccs/GithubClones/Trackformer_forked/trackformer/data/Egohumans_full_MOT/test/tagging_014_tagging_aria03_rgb/gt/gt.txt

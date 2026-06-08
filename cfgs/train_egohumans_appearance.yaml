@@ -1,0 +1,15 @@
+# _________ Created this file to handle egocentric data augmentation for branch appearance
+
+# Plan B: Egocentric appearance augmentation fine-tuning
+# Inherits egohumans_full config, overrides only these values
+
+ego_augment: True
+lr: 0.00001
+lr_backbone: 0.0
+epochs: 15
+lr_drop: 12
+batch_size: 2
+resume: models/egohumans_full/checkpoint_epoch_50.pth
+resume_optim: False
+output_dir: models/egohumans_appearance
+

@@ -20,10 +20,10 @@ resume: 'models/mot20_crowdhuman_deformable_multi_frame/checkpoint_epoch_50.pth'
 output_dir: 'models/egohumans_full'
 
 # _____ CHANGED:
-#tracking_eval: false # not needed i handled via modifyinh train.py
+#tracking_eval: false # not needed i handled via modifying train.py
 
 
 # ── Hyperparameters — adjust based on your GPU and dataset size ───────────────
 epochs: 50
 lr_drop: 40
-batch_size: 1   # I will increase to 2 if VRAM allows
+batch_size: 1  # I will increase to 2 if VRAM allows

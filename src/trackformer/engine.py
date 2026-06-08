@@ -85,8 +85,9 @@ def make_results(outputs, targets, postprocessors, tracking, return_only_orig=Tr
 
             if 'track_query_match_ids' in target and len(target['track_query_match_ids']):
                 track_queries_iou, _ = box_iou(
-                    target['boxes'][target['track_query_match_ids']],
+                    target['boxes'][target['track_query_match_ids'].to(target['boxes'].device)], 
                     result['boxes'])
+                    # line 88 was modified to handle visdom data display issue 
 
                 box_ids = [box_id
                     for box_id, (is_track_query, is_fals_pos_track_query)
