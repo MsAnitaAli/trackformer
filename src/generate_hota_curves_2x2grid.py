@@ -35,7 +35,7 @@ TARGET_SETUPS = {
     "Best IDF1 (No ReID)":     {"folder": f"{MODEL_BASE_NAME}_NoReID_best_IDF1_TEST", "color": COLOR_IDF1,  "row": 1},
     "Final Epoch (No ReID)":   {"folder": f"{MODEL_BASE_NAME}_ver2_NoReID_TEST",           "color": COLOR_FINAL, "row": 1},
 }
-#___________________ I used 2o epochs model, but best epoch is 15. names include ver2_____________ 
+#___________________ I used 20 epochs model, but best epoch is 15. names include ver2_____________ 
 # ==============================================================================
 # --- PUBLICATION-QUALITY PLOT STYLING (Q1 Journal Standards) ---
 # ==============================================================================
@@ -112,9 +112,9 @@ for row in range(2):
 # ------------------------------------------------------------------------------
 plt.tight_layout()
 
-pdf_out = os.path.join(OUTPUT_GRAPH_DIR, "hota_curves_2x2_grid(20epochs).pdf")
-eps_out = os.path.join(OUTPUT_GRAPH_DIR, "hota_curves_2x2_grid(20epochs).eps")
-png_out = os.path.join(OUTPUT_GRAPH_DIR, "hota_curves_2x2_grid(20epochs).png")
+pdf_out = os.path.join(OUTPUT_GRAPH_DIR, "hota_curves_2x2_grid.pdf")
+eps_out = os.path.join(OUTPUT_GRAPH_DIR, "hota_curves_2x2_grid.eps")
+png_out = os.path.join(OUTPUT_GRAPH_DIR, "hota_curves_2x2_grid.png")
 
 fig.savefig(pdf_out, bbox_inches="tight")
 fig.savefig(eps_out, bbox_inches="tight")

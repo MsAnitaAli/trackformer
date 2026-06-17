@@ -1,0 +1,15 @@
+# Plan 2: Egomotion-aware track query compensation
+# Builds on top of Plan 1 (appearance) — resume from best appearance model
+use_egomotion: True
+ego_augment: True           # keep Plan 2 augmentations active
+lr: 0.000005                # lower LR — model already well adapted
+lr_backbone: 0.0
+lr_drop: 8
+epochs: 10
+batch_size: 2
+num_workers: 4
+# epoch interval for model saving. if 0 only save last and best models
+save_model_interval: 1
+resume: models/egohumans_appearance2/checkpoint_epoch_15.pth # it can be one of these 1. 15epochs , 2 best mota or 3 best idf1
+resume_optim: False
+output_dir: models/egohumans_egomotion

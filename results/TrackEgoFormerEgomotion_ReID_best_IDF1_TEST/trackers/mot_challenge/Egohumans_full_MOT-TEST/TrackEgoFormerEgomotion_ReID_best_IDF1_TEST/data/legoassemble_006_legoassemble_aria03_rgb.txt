@@ -1,0 +1,1 @@
+/home/nccs/GithubClones/Trackformer_forked/trackformer/results/egomotion_eval_reid_bestIDF1_TEST/legoassemble_006_legoassemble_aria03_rgb.txt

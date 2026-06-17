@@ -264,6 +264,25 @@ class DETRTrackingBase(nn.Module):
                     prev_indices = self._matcher(prev_outputs_without_aux, prev_targets)
 
                     self.add_track_queries_to_targets(targets, prev_indices, prev_out)
+                    
+                    #________________ Added for egomotion compensation ________________________________
+                    
+                    if getattr(self, 'use_egomotion', False):
+                        from .egomotion import estimate_egomotion
+                        curr_tensors = samples.tensors  # (B, C, H, W)
+                        for i, target in enumerate(targets):
+                            if len(target['track_query_boxes']) == 0:
+                                continue
+                            ego = estimate_egomotion(
+                                target['prev_image'],
+                                curr_tensors[i]
+                            ).to(curr_tensors.device)
+                            target['track_query_boxes'][:, 0] = (
+                                target['track_query_boxes'][:, 0] + ego[0]).clamp(0, 1)
+                            target['track_query_boxes'][:, 1] = (
+                                target['track_query_boxes'][:, 1] + ego[1]).clamp(0, 1)
+                                
+                    # ─────────────────────────────────────────────────────────────────────────────────
             else:
                 # if not training we do not add track queries and evaluate detection performance only.
                 # tracking performance is evaluated by the actual tracking evaluation.

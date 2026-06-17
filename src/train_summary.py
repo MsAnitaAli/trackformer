@@ -40,6 +40,8 @@ ex.add_named_config('egotracks_prototype', 'cfgs/train_egotracks_prototype.yaml'
 ex.add_named_config('egohumans_full', 'cfgs/train_egohumans_full.yaml')
 # Added for appearance branch
 ex.add_named_config('egohumans_appearance', 'cfgs/train_egohumans_appearance.yaml')
+# Added for egomotion branhc
+ex.add_named_config('egohumans_egomotion', 'cfgs/train_egohumans_egomotion.yaml')
 
 def train(args: Namespace) -> None:
     print(args)
@@ -93,6 +95,11 @@ def train(args: Namespace) -> None:
     torch.backends.cudnn.deterministic = True
 
     model, criterion, postprocessors = build_model(args)
+    # ── Plan 2: attach egomotion flag to model ──────────────────
+    if getattr(args, 'use_egomotion', False):
+        model.use_egomotion = True
+        print('[Plan2] Egomotion compensation enabled.')
+    # ────────────────────────────────────────────────────────────
     model.to(device)
 
     visualizers = build_visualizers(args, list(criterion.weight_dict.keys()))

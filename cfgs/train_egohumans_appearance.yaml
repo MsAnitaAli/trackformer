@@ -12,4 +12,6 @@ batch_size: 2
 resume: models/egohumans_full/checkpoint_epoch_50.pth
 resume_optim: False
 output_dir: models/egohumans_appearance
+# epoch interval for model saving. if 0 only save last and best models
+save_model_interval: 1
 

@@ -1,0 +1,1 @@
+/home/nccs/GithubClones/Trackformer_forked/trackformer/results/egomotion_eval_reid_TRAIN/tagging_003_tagging_aria02_rgb.txt

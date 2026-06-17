@@ -72,6 +72,7 @@ class Tracker:
         self.tracks = []
         self.inactive_tracks = []
         self._prev_features = deque([None], maxlen=self.prev_frame_dist)
+        self._prev_img = None  # ____________added for egomotion branch___________________ 
 
         if hard:
             self.track_num = 0
@@ -300,11 +301,25 @@ class Tracker:
             target['track_query_hs_embeds'] = torch.stack([
                 t.hs_embed[-1] for t in self.tracks + self.inactive_tracks], dim=0)
 
+            
             target = {k: v.to(self.device) for k, v in target.items()}
             target = [target]
 
+        # ── Plan A: egomotion compensation at inference ────────────────
+        if (getattr(self.obj_detector, 'use_egomotion', False)
+                and self._prev_img is not None
+                and target is not None
+                and len(target[0]['track_query_boxes']) > 0):
+            from .egomotion import estimate_egomotion
+            ego = estimate_egomotion(self._prev_img[0], img[0]).to(self.device)
+            target[0]['track_query_boxes'][:, 0] = (
+                target[0]['track_query_boxes'][:, 0] + ego[0]).clamp(0, 1)
+            target[0]['track_query_boxes'][:, 1] = (
+                target[0]['track_query_boxes'][:, 1] + ego[1]).clamp(0, 1)
+                
+        # ──────────────────────────────────────────────────────────────
         outputs, _, features, _, _ = self.obj_detector(img, target, self._prev_features[0])
-
+        
         hs_embeds = outputs['hs_embed'][0]
 
         results = self.obj_detector_post['bbox'](outputs, orig_size)
@@ -550,6 +565,7 @@ class Tracker:
 
         self.frame_index += 1
         self._prev_features.append(features)
+        self._prev_img = img.detach()  # ______________added for egomotion branch____________  
 
         if self.reid_sim_only:
             self.tracks_to_inactive(self.tracks)

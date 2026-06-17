@@ -19,8 +19,8 @@ model_name = "egohumans_appearance"# default model name or can be passed from co
 if len(sys.argv) > 1:
     model_name = sys.argv[1]
 
-#LOG_FILE_PATH = f"models/{model_name}/log.txt"
-LOG_FILE_PATH = f"models/{model_name}/log_1_20epochs.txt"
+LOG_FILE_PATH = f"models/{model_name}/log.txt" # actual
+#LOG_FILE_PATH = f"models/{model_name}/log_1_20epochs.txt" # used this to generate apperaance ver2 graphs
 OUTPUT_DIR = f"results/{model_name}_graphs"
 
 # Verification checkpoint
