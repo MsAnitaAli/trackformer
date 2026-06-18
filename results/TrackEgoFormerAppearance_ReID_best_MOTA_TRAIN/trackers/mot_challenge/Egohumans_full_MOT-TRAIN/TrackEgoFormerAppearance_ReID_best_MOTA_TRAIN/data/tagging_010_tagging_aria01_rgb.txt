@@ -1,0 +1,1 @@
+/home/nccs/GithubClones/Trackformer_forked/trackformer/results/appearance2_eval_reid_bestMOTA_TRAIN/tagging_010_tagging_aria01_rgb.txt

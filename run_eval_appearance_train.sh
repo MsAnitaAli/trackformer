@@ -1,7 +1,7 @@
 !/bin/bash
 #set -e. if this is used then it stops if one command fails. also remove || echo...
 
-#1. Epoch 15 — with reid
+#1. Epoch 20 — with reid
 python src/track_summary.py with \
     reid \
     dataset_name=Egohumans_full-TRAIN \
@@ -10,7 +10,7 @@ python src/track_summary.py with \
     write_images=False || echo "Command 1 failed, continuing..."
 
 
-# 2. Epoch 15 — without reid
+# 2. Epoch 20 — without reid
 #python src/track_summary.py with \
 #    dataset_name=Egohumans_full-TRAIN \
 #    obj_detect_checkpoint_file=models/egohumans_appearance/checkpoint_epoch_15.pth \
