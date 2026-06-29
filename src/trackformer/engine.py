@@ -85,7 +85,8 @@ def make_results(outputs, targets, postprocessors, tracking, return_only_orig=Tr
 
             if 'track_query_match_ids' in target and len(target['track_query_match_ids']):
                 track_queries_iou, _ = box_iou(
-                    target['boxes'][target['track_query_match_ids']],
+                    #target['boxes'][target['track_query_match_ids']],# original
+                    target['boxes'][target['track_query_match_ids'].to(target['boxes'].device)], # this ensures that track_query_match_ids is on the same device as target['boxes'] before indexing.
                     result['boxes'])
 
                 box_ids = [box_id

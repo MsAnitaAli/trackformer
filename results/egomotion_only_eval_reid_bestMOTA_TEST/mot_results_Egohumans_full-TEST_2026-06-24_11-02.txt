@@ -1,0 +1,20 @@
+Dataset  : Egohumans_full-TEST
+Timestamp: 2026-06-24_11-02
+Checkpoint: models/egohumans_egomotion_only/checkpoint_best_MOTA.pth
+
+                                                IDF1    IDP    IDR   Rcll   Prcn GT MT PT ML  FP  FN IDs   FM   MOTA  MOTP IDt IDa IDm
+tagging_013_tagging_aria01_rgb-None            92.4%  91.8%  93.0%  99.1%  97.8%  3  3  0  0  10   4   2    3  96.5% 0.084   0   2   0
+tagging_013_tagging_aria02_rgb-None            62.5%  63.5%  61.6%  95.4%  98.3%  3  3  0  0   7  20   8    7  91.9% 0.085   1   7   0
+tagging_013_tagging_aria03_rgb-None            83.5%  84.6%  82.5%  95.7%  98.2%  3  3  0  0   4  10   3    5  92.7% 0.097   0   3   0
+tagging_013_tagging_aria04_rgb-None            72.5%  74.0%  71.0%  94.8%  98.8%  3  3  0  0   6  26   6    7  92.5% 0.097   1   5   0
+tagging_014_tagging_aria01_rgb-None            40.0%  42.0%  38.2%  87.6%  96.3%  3  3  0  0  16  59  18   13  80.5% 0.104   3  14   0
+tagging_014_tagging_aria02_rgb-None            41.6%  43.4%  40.0%  90.8%  98.6%  3  2  1  0   6  43  18    8  85.7% 0.115   4  14   0
+tagging_014_tagging_aria03_rgb-None            88.0%  90.0%  86.1%  94.2%  98.6%  3  3  0  0   4  17   3    8  91.8% 0.108   1   2   0
+tagging_014_tagging_aria04_rgb-None            60.5%  63.2%  58.1%  88.5%  96.2%  3  3  0  0  21  69   7   13  83.8% 0.140   0   7   0
+legoassemble_006_legoassemble_aria01_rgb-None  73.3%  69.9%  76.9%  98.4%  89.4%  2  2  0  0  36   5   4    3  85.4% 0.153   0   4   0
+legoassemble_006_legoassemble_aria02_rgb-None  84.2%  88.6%  80.3%  86.7%  95.7%  2  1  1  0  19  64   4   12  82.0% 0.186   0   4   0
+legoassemble_006_legoassemble_aria03_rgb-None  56.0%  57.7%  54.3%  87.2%  92.6%  2  1  1  0  25  46  10    8  77.4% 0.177   4   6   0
+fencing_010_fencing_aria01_rgb-None           100.0% 100.0% 100.0% 100.0% 100.0%  1  1  0  0   0   0   0    0 100.0% 0.081   0   0   0
+fencing_010_fencing_aria02_rgb-None            96.5%  96.6%  96.4%  99.1%  99.4%  2  2  0  0   7  10   1    4  98.4% 0.074   0   1   0
+fencing_010_fencing_aria03_rgb-None            48.0%  51.1%  45.2%  87.3%  98.8%  2  1  1  0  11 133  13   17  85.0% 0.065   0  13   0
+OVERALL                                        71.6%  73.3%  70.0%  93.1%  97.5% 35 31  4  0 172 506  97  108  89.4% 0.103  14  82   0

@@ -1,0 +1,1 @@
+/home/nccs/GithubClones/Trackformer_forked/trackformer/results/egomotion_only_eval_reid_bestMOTA_TRAIN/fencing_008_fencing_aria02_rgb.txt

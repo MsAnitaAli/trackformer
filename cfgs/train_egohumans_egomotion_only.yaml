@@ -1,0 +1,13 @@
+use_egomotion: True
+ego_augment: False          # ← no appearance augmentation
+lr: 0.00001
+lr_backbone: 0.0
+lr_drop: 8
+epochs: 10
+batch_size: 2
+num_workers: 4
+val_interval: 1
+resume: models/egohumans_full/checkpoint_epoch_50.pth  #  from baseline, not appearance branch
+resume_optim: False
+resume_vis: False # This is a fresh visdom environment (egohumans_egomotion_only), so it doesn't need to resume old plot window states
+output_dir: models/egohumans_egomotion_only

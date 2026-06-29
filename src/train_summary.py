@@ -38,6 +38,12 @@ ex.add_named_config('multi_frame', 'cfgs/train_multi_frame.yaml')
 ex.add_named_config('egotracks_prototype', 'cfgs/train_egotracks_prototype.yaml')
 # Added this line for egohumans_full 
 ex.add_named_config('egohumans_full', 'cfgs/train_egohumans_full.yaml')
+# Added for appearance branch
+#ex.add_named_config('egohumans_appearance', 'cfgs/train_egohumans_appearance.yaml')
+# Added for egomotion branch on top of appearnce branch
+#ex.add_named_config('egohumans_egomotion', 'cfgs/train_egohumans_egomotion.yaml')
+# Added for egomotion-only branch , edxtracted from main
+ex.add_named_config('egohumans_egomotion_only', 'cfgs/train_egohumans_egomotion_only.yaml')
 
 def train(args: Namespace) -> None:
     print(args)
@@ -91,6 +97,11 @@ def train(args: Namespace) -> None:
     torch.backends.cudnn.deterministic = True
 
     model, criterion, postprocessors = build_model(args)
+    # ── Plan 2: attach egomotion flag to model ──────────────────
+    if getattr(args, 'use_egomotion', False):
+        model.use_egomotion = True
+        print('[Plan2] Egomotion compensation enabled.')
+    # ────────────────────────────────────────────────────────────
     model.to(device)
 
     visualizers = build_visualizers(args, list(criterion.weight_dict.keys()))
@@ -110,6 +121,17 @@ def train(args: Namespace) -> None:
                 out = True
                 break
         return out
+
+    # ── Plan B: freeze backbone and encoder if ego_augment is set ────────
+    if getattr(args, 'ego_augment', False):
+        for name, param in model_without_ddp.named_parameters():
+            if 'backbone' in name or 'encoder' in name:
+                param.requires_grad = False
+        actual = sum(p.numel() for p in model_without_ddp.parameters() if p.requires_grad)
+        frozen = sum(p.numel() for p in model_without_ddp.parameters() if not p.requires_grad)
+        print(f"[PlanB] Frozen params: {frozen:,}")
+        print(f"[PlanB] Trainable params after freeze: {actual:,}")
+    # ─────────────────────────────────────────────────────────────────────
 
     param_dicts = [
         {"params": [p for n, p in model_without_ddp.named_parameters()
@@ -150,14 +172,16 @@ def train(args: Namespace) -> None:
         dataset_train,
         batch_sampler=batch_sampler_train,
         collate_fn=utils.collate_fn,
-        num_workers=args.num_workers)
+        num_workers=args.num_workers,
+        pin_memory=True)             #___________added to handle more data
     data_loader_val = DataLoader(
         dataset_val, args.batch_size,
         sampler=sampler_val,
         drop_last=False,
         collate_fn=utils.collate_fn,
-        num_workers=args.num_workers)
-
+        num_workers=args.num_workers,
+        pin_memory=True)            #___________added to handle more data 
+       
     best_val_stats = None
     if args.resume:
         if args.resume.startswith('https'):
@@ -285,6 +309,7 @@ def train(args: Namespace) -> None:
 
         return
 
+
     print("Start training")
     start_time = time.time()
     for epoch in range(args.start_epoch, args.epochs + 1):
@@ -367,3 +392,5 @@ if __name__ == '__main__':
     args = nested_dict_to_namespace(config)
     # args.train = Namespace(**config['train'])
     train(args)
+
+

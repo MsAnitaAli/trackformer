@@ -1,0 +1,1 @@
+/home/nccs/GithubClones/Trackformer_forked/trackformer/results/egomotion_only_eval_Noreid_bestIDF1_TEST/fencing_010_fencing_aria02_rgb.txt

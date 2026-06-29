@@ -1,0 +1,1 @@
+/home/nccs/GithubClones/Trackformer_forked/trackformer/data/Egohumans_full_MOT/train/fencing_003_fencing_aria02_rgb/gt/gt.txt
