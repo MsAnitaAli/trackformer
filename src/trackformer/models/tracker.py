@@ -211,7 +211,9 @@ class Tracker:
 
         else:
             for track in self.inactive_tracks:
-                track_sim = track.hs_embed[-1]
+                #track_sim = track.hs_embed[-1]# original
+                #__________ added for plan 4: Temporal Appearance Memory Bank
+                track_sim = track.mean_hs_embed
 
                 track_sim_dists = torch.cat([
                     F.pairwise_distance(track_sim, sim.unsqueeze(0))
@@ -586,3 +588,11 @@ class Track(object):
         """Reset last_pos to the current position of the track."""
         self.last_pos.clear()
         self.last_pos.append(self.pos.clone())
+
+#_____________ Added for plan 4: Temporal Appearance Memory Bank__________________
+
+    @property
+    def mean_hs_embed(self):
+        # rolling mean of last 5 embeddings
+        stack = torch.stack(list(self.hs_embed)[-5:])
+        return stack.mean(dim=0)
