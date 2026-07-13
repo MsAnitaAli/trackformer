@@ -1,0 +1,1 @@
+/home/nccs/GithubClones/Trackformer_forked/trackformer/results/scale_aware_eval_reid_bestIDF1_TRAIN/fencing_009_fencing_aria03_rgb.txt

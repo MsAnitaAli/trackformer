@@ -218,6 +218,22 @@ class DeformableTransformer(nn.Module):
 
                 prev_tgt = prev_hs_embed
                 # prev_tgt = self.hs_embed_to_tgt(prev_hs_embed)
+                #--------------------------------- Plan D: Scale-Aware Attention ──────────────────────────
+                if getattr(self, 'use_scale_aware', False) and prev_boxes.shape[1] > 0:
+                    # prev_boxes: (B, N, 4) normalised cxcywh
+                    # box area = w * h, both in [0,1]
+                    box_w = prev_boxes[..., 2]  # (B, N)
+                    box_h = prev_boxes[..., 3]  # (B, N)
+                    box_area = (box_w * box_h).clamp(min=1e-6)  # (B, N)
+
+                    # Normalise: larger box → weight closer to 1.0
+                    # Small boxes (far people) get softened
+                    scale_weight = box_area / (box_area.max(dim=1, keepdim=True)[0] + 1e-6)
+                    scale_weight = scale_weight.unsqueeze(-1)  # (B, N, 1)
+
+                    # Gate the track query content embeddings
+                    prev_tgt = prev_tgt * scale_weight
+                # ─────────────────────────────────────────────────────────
 
                 query_embed = torch.cat([prev_query_embed, query_embed], dim=1)
                 tgt = torch.cat([prev_tgt, tgt], dim=1)

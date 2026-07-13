@@ -1,0 +1,1 @@
+/home/nccs/GithubClones/Trackformer_forked/trackformer/results/scale_aware_eval_Noreid_TRAIN/tagging_004_tagging_aria02_rgb.txt

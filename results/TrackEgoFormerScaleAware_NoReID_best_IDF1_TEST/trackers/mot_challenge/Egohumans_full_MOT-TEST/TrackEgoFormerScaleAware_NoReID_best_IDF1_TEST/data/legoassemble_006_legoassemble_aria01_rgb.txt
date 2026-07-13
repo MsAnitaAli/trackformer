@@ -1,0 +1,1 @@
+/home/nccs/GithubClones/Trackformer_forked/trackformer/results/scale_aware_eval_Noreid_bestIDF1_TEST/legoassemble_006_legoassemble_aria01_rgb.txt

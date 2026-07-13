@@ -1,0 +1,1 @@
+/home/nccs/GithubClones/Trackformer_forked/trackformer/results/scale_aware_eval_Noreid_bestMOTA_TEST/tagging_013_tagging_aria04_rgb.txt

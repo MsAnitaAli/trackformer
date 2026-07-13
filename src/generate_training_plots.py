@@ -19,8 +19,7 @@ model_name = "egohumans_appearance"# default model name or can be passed from co
 if len(sys.argv) > 1:
     model_name = sys.argv[1]
 
-#LOG_FILE_PATH = f"models/{model_name}/log.txt"
-LOG_FILE_PATH = f"models/{model_name}/log_1_20epochs.txt"
+LOG_FILE_PATH = f"models/{model_name}/log.txt"
 OUTPUT_DIR = f"results/{model_name}_graphs"
 
 # Verification checkpoint
@@ -98,10 +97,10 @@ ax.set_ylabel("Total Loss (Running Average)")
 ax.set_xticks(df_epoch["Epoch"])
 
 plt.tight_layout()
-#fig.savefig(os.path.join(OUTPUT_DIR, "total_loss_epochs.pdf"), bbox_inches="tight")
-#fig.savefig(os.path.join(OUTPUT_DIR, "total_loss_epochs.eps"), bbox_inches="tight")
-fig.savefig(os.path.join(OUTPUT_DIR, "total_loss_epochs(20epochs).pdf"), bbox_inches="tight")
-fig.savefig(os.path.join(OUTPUT_DIR, "total_loss_epochs(20epochs).eps"), bbox_inches="tight")
+fig.savefig(os.path.join(OUTPUT_DIR, "total_loss_epochs.pdf"), bbox_inches="tight")
+fig.savefig(os.path.join(OUTPUT_DIR, "total_loss_epochs.eps"), bbox_inches="tight")
+fig.savefig(os.path.join(OUTPUT_DIR, "total_loss_epochs.png"), bbox_inches="tight", dpi=300)
+
 plt.close()
 
 
@@ -117,10 +116,9 @@ ax.set_ylabel("Loss Component Values")
 ax.legend(loc="upper right", frameon=True, facecolor="white", edgecolor="none")
 
 plt.tight_layout()
-#fig.savefig(os.path.join(OUTPUT_DIR, "component_losses_iteration.pdf"), bbox_inches="tight")
-#fig.savefig(os.path.join(OUTPUT_DIR, "component_losses_iteration.eps"), bbox_inches="tight")
-fig.savefig(os.path.join(OUTPUT_DIR, "component_losses_iteration(20epochs).pdf"), bbox_inches="tight")
-fig.savefig(os.path.join(OUTPUT_DIR, "component_losses_iteration(20epochs).eps"), bbox_inches="tight")
+fig.savefig(os.path.join(OUTPUT_DIR, "component_losses_iteration.pdf"), bbox_inches="tight")
+fig.savefig(os.path.join(OUTPUT_DIR, "component_losses_iteration.eps"), bbox_inches="tight")
+fig.savefig(os.path.join(OUTPUT_DIR, "component_losses_iteration.png"), bbox_inches="tight", dpi=300)
 plt.close()
 
 

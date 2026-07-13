@@ -40,6 +40,8 @@ ex.add_named_config('egotracks_prototype', 'cfgs/train_egotracks_prototype.yaml'
 ex.add_named_config('egohumans_full', 'cfgs/train_egohumans_full.yaml')
 # Added for appearance branch
 ex.add_named_config('egohumans_appearance', 'cfgs/train_egohumans_appearance.yaml')
+# added for context aware branch
+ex.add_named_config('egohumans_scale_aware', 'cfgs/train_egohumans_scale_aware.yaml')
 
 def train(args: Namespace) -> None:
     print(args)
@@ -123,6 +125,12 @@ def train(args: Namespace) -> None:
         print(f"[PlanB] Frozen params: {frozen:,}")
         print(f"[PlanB] Trainable params after freeze: {actual:,}")
     # ─────────────────────────────────────────────────────────────────────
+    
+    # ── Plan D: attach scale_aware flag to transformer ───────────
+    if getattr(args, 'use_scale_aware', False):
+        model_without_ddp.transformer.use_scale_aware = True
+        print('[PlanD] Scale-aware attention enabled.')
+    # ────────────────────────────────────────────────────────────
 
     param_dicts = [
         {"params": [p for n, p in model_without_ddp.named_parameters()
