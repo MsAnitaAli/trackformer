@@ -6,7 +6,7 @@ Graphs produced:
   2. component_losses_iteration.pdf/eps/png — Sub-loss components over iterations (train only)
 
 Usage:
-  python src/generate_training_plots.py [model_name]
+  python src/generate_training_test_plots.py [model_name]
 
 Default model_name: egohumans_appearance
 """
