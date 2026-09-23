@@ -1,1 +1,0 @@
-/home/nccs/GithubClones/Trackformer_forked/trackformer/results/egohumans_baseline2_visualization_reid_TRAIN/fencing_001_fencing_aria03_rgb.txt

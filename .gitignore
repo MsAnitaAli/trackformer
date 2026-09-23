@@ -31,3 +31,4 @@ src/trackformer/models/ops/temp*
 *.png
 *.gif
 
+results/
