@@ -1,0 +1,13 @@
+# crteated to handle Contrastive Re-ID Loss on Track Queries  plan  A
+contrastive_loss_coef: 0.5  # Contrastive Re-ID Loss on Track Queries — Plan A
+lr: 0.00001
+lr_backbone: 0.0
+lr_drop: 8
+epochs: 10
+batch_size: 2
+num_workers: 4
+val_interval: 1
+resume: models/egohumans_full/checkpoint_epoch_50.pth  #  from baseline 
+resume_optim: False
+resume_vis: False # This is a fresh visdom environment (egohumans_con_triploss), so it doesn't need to resume old plot window states
+output_dir: 'models/egohumans_con_triploss'

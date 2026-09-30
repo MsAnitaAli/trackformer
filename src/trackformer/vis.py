@@ -137,7 +137,7 @@ def vis_results(visualizer, img, result, target, tracking):
         num_track_queries_with_id = len(target['track_query_match_ids'])
         track_ids = target['track_ids'][target['track_query_match_ids']]
 
-    keep = result['scores'].cpu() > result['scores_no_object'].cpu()
+    keep = result['scores'].cpu() > result['scores_no_object'].cpu() # added to handle visdom display
 
     cmap = plt.cm.get_cmap('hsv', len(keep))
 
@@ -148,9 +148,11 @@ def vis_results(visualizer, img, result, target, tracking):
         text = f"{result['scores'][box_id]:0.2f}"
 
         if tracking:
-            if target['track_queries_fal_pos_mask'][box_id]:
+            #if target['track_queries_fal_pos_mask'][box_id]:
+            if target['track_queries_fal_pos_mask'].cpu()[box_id]: # .cpu() is added to handle visdom display
                 rect_color = 'red'
-            elif target['track_queries_mask'][box_id]:
+            #elif target['track_queries_mask'][box_id]:
+            elif target['track_queries_mask'].cpu()[box_id]: # .cpu() is added to handle visdom display 
                 offset = 50
                 rect_color = 'blue'
                 text = (
@@ -183,7 +185,8 @@ def vis_results(visualizer, img, result, target, tracking):
 
     query_keep = keep
     if tracking:
-        query_keep = keep[target['track_queries_mask'] == 0]
+        #query_keep = keep[target['track_queries_mask'] == 0]
+        query_keep = keep[target['track_queries_mask'].cpu() == 0]  # .cpu() is added to handle visdom display
 
     legend_handles = [mpatches.Patch(
         color='green',
@@ -191,7 +194,8 @@ def vis_results(visualizer, img, result, target, tracking):
 
     if num_track_queries:
         track_queries_label = (
-            f"track queries ({keep[target['track_queries_mask']].sum() - keep[target['track_queries_fal_pos_mask']].sum()}"
+            #f"track queries ({keep[target['track_queries_mask']].sum() - keep[target['track_queries_fal_pos_mask']].sum()}"
+            f"track queries ({keep[target['track_queries_mask'].cpu()].sum() - keep[target['track_queries_fal_pos_mask'].cpu()].sum()}" # .cpu() is added to handle visdom display
             f"/{num_track_queries_with_id})\n- track_id\n- cls_score\n- iou")
 
         legend_handles.append(mpatches.Patch(
@@ -200,7 +204,8 @@ def vis_results(visualizer, img, result, target, tracking):
 
     if num_track_queries_with_id != num_track_queries:
         track_queries_fal_pos_label = (
-            f"false track queries ({keep[target['track_queries_fal_pos_mask']].sum()}"
+            #f"false track queries ({keep[target['track_queries_fal_pos_mask']].sum()}"
+            f"false track queries ({keep[target['track_queries_fal_pos_mask'].cpu()].sum()}" # .cpu() is added to handle visdom display
             f"/{num_track_queries - num_track_queries_with_id})")
 
         legend_handles.append(mpatches.Patch(

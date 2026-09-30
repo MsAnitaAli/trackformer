@@ -327,6 +327,81 @@ class SetCriterion(nn.Module):
 
         return losses
 
+    #_________________ Added for branch contrip_loss (Contrastive Re-ID Loss on Track Queries  plan  A)_________________
+    def loss_contrastive(self, outputs, targets, indices, num_boxes, **kwargs):
+        """
+        Supervised contrastive loss on track queries.
+
+        Positive pair: for each matched track query i,
+            anchor   = current-frame decoder output  hs_embed[i]   (from outputs['hs_embed'])
+            positive = carried-over prev-frame embed  prev_hs[i]   (from target['track_query_hs_embeds'])
+
+        Negatives: all other track queries in the same batch item.
+
+        Skipped when there are no track queries (first frame of a sequence).
+        """
+        if 'hs_embed' not in outputs:
+            return {'loss_contrastive': torch.tensor(0.0, device=next(iter(outputs.values())).device, requires_grad=True)}
+
+        total_loss = []
+
+        for i, target in enumerate(targets):
+            # Need both track query embeddings present
+            if ('track_query_hs_embeds' not in target or 'track_queries_mask' not in target):
+                continue
+
+            prev_hs = target['track_query_hs_embeds']  # (K, d) — carried-over from prev frame
+            if prev_hs.shape[0] == 0:
+                continue
+
+            # track_queries_mask marks which slots are real track queries (not object queries)
+            tq_mask = target['track_queries_mask']   # bool, length = K + Nq
+
+            # Current-frame decoder output for track query slots only
+            curr_hs_all = outputs['hs_embed'][i]     # (K + Nq, d)
+            curr_hs = curr_hs_all[tq_mask]           # (K, d)
+
+            # Exclude false-positive track queries — they have no real identity
+            if 'track_queries_fal_pos_mask' in target:
+                fal_pos = target['track_queries_fal_pos_mask'][tq_mask]
+                real_mask = ~fal_pos                 # (K,) bool
+            else:
+                real_mask = torch.ones(curr_hs.shape[0], dtype=torch.bool, device=curr_hs.device)
+
+            if real_mask.sum() < 2:
+                # Need at least 2 real track queries for a meaningful loss
+                continue
+
+            curr_hs = curr_hs[real_mask] # (M, d)
+            prev_hs = prev_hs[real_mask] # (M, d)
+
+            # L2-normalise for cosine similarity
+            curr_norm = torch.nn.functional.normalize(curr_hs, dim=1)
+            prev_norm = torch.nn.functional.normalize(prev_hs, dim=1)
+
+            # Similarity matrix: curr vs prev — (M, M)
+            # Diagonal = positive pairs (same track query, adjacent frames)
+            # Off-diagonal = negative pairs (different tracks)
+            sim_matrix = torch.matmul(curr_norm, prev_norm.t())  # (M, M)
+
+            temperature = 0.07
+            sim_matrix = sim_matrix / temperature
+
+            # Labels: diagonal is the positive (class i matches class i)
+            M = curr_hs.shape[0]
+            labels = torch.arange(M, device=curr_hs.device)
+
+            # Cross-entropy across rows (each anchor matched to its positive)
+            item_loss = torch.nn.functional.cross_entropy(sim_matrix, labels)
+            total_loss.append(item_loss)
+
+        if not total_loss:
+            device = outputs['hs_embed'].device
+            return {'loss_contrastive': torch.tensor(0.0, device=device,requires_grad=True)}
+
+        return {'loss_contrastive': torch.stack(total_loss).mean()}
+#____________________________________________________________________________________
+    
     def loss_masks(self, outputs, targets, indices, num_boxes):
         """Compute the losses related to the masks: the focal loss and the dice loss.
            targets dicts must contain the key "masks" containing a tensor of
@@ -375,7 +450,7 @@ class SetCriterion(nn.Module):
             'cardinality': self.loss_cardinality,
             'boxes': self.loss_boxes,
             'masks': self.loss_masks,
-        }
+            'contrastive': self.loss_contrastive, } # added contrastive': self.loss_contrastive,   for Contrastive Re-ID Loss on Track Queries  plan A
         assert loss in loss_map, f'do you really want to compute {loss} loss?'
         return loss_map[loss](outputs, targets, indices, num_boxes, **kwargs)
 
