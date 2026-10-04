@@ -84,7 +84,8 @@ def build_model(args):
 
     weight_dict = {'loss_ce': args.cls_loss_coef,
                    'loss_bbox': args.bbox_loss_coef,
-                   'loss_giou': args.giou_loss_coef,}
+                   'loss_giou': args.giou_loss_coef,
+                   'loss_contrastive': args.contrastive_loss_coef,}  # added this for Contrastive Re-ID Loss on Track Queries  (temporal)
 
     if args.masks:
         weight_dict["loss_mask"] = args.mask_loss_coef
@@ -93,14 +94,21 @@ def build_model(args):
     # TODO this is a hack
     if args.aux_loss:
         aux_weight_dict = {}
-        for i in range(args.dec_layers - 1):
-            aux_weight_dict.update({k + f'_{i}': v for k, v in weight_dict.items()})
+        #for i in range(args.dec_layers - 1):
+        #    aux_weight_dict.update({k + f'_{i}': v for k, v in weight_dict.items()})
+        for i in range(args.dec_layers - 1): # added for con_triploss_temporal ... to handle aux_weight_dict exclusion
+            aux_weight_dict.update({
+                k + f'_{i}': v
+                for k, v in weight_dict.items()
+                if k != 'loss_contrastive'
+            })
+        
 
         if args.two_stage:
             aux_weight_dict.update({k + f'_enc': v for k, v in weight_dict.items()})
         weight_dict.update(aux_weight_dict)
 
-    losses = ['labels', 'boxes', 'cardinality']
+    losses = ['labels', 'boxes', 'cardinality', 'contrastive']  # add 'contrastive' for Contrastive Re-ID Loss on Track Queries  (temporal)
     if args.masks:
         losses.append('masks')
 

@@ -327,6 +327,84 @@ class SetCriterion(nn.Module):
 
         return losses
 
+    # _________________ Added for branch con_triploss_temporal (Contrastive Re-ID Loss on Track Queries  _________________
+    def loss_contrastive(self, outputs, targets, indices, num_boxes, **kwargs):
+        """
+        Supervised contrastive loss on track queries with dropout-augmented positives.
+
+        For each matched track query i:
+            anchor_1   = curr_hs[i]                  (current decoder output)
+            anchor_2   = dropout(curr_hs[i], p=0.3)  (simulates appearance variation)
+            positive   = prev_hs[i]                  (carried-over prev-frame embed)
+            negatives  = all other track queries in the same batch item
+
+        Two cross-entropy terms per step:
+            loss_1: sim(anchor_1, prev) vs negatives
+            loss_2: sim(anchor_2, prev) vs negatives
+
+        Skipped when fewer than 2 real track queries exist.
+        """
+        if 'hs_embed' not in outputs:
+            return {'loss_contrastive': torch.tensor(
+                0.0,
+                device=next(iter(outputs.values())).device,
+                requires_grad=True)}
+
+        total_loss = []
+        temperature = 0.07
+        dropout = torch.nn.functional.dropout
+
+        for i, target in enumerate(targets):
+            if ('track_query_hs_embeds' not in target or 'track_queries_mask' not in target):
+                continue
+
+            prev_hs = target['track_query_hs_embeds']
+            if prev_hs.shape[0] == 0:
+                continue
+
+            tq_mask = target['track_queries_mask']
+            curr_hs_all = outputs['hs_embed'][i]
+            curr_hs = curr_hs_all[tq_mask]
+
+            if 'track_queries_fal_pos_mask' in target:
+                fal_pos = target['track_queries_fal_pos_mask'][tq_mask]
+                real_mask = ~fal_pos
+            else:
+                real_mask = torch.ones(curr_hs.shape[0], dtype=torch.bool, device=curr_hs.device)
+
+            if real_mask.sum() < 2:
+                continue
+
+            curr_hs = curr_hs[real_mask]
+            prev_hs = prev_hs[real_mask]
+
+            # L2-normalise
+            curr_norm = torch.nn.functional.normalize(curr_hs, dim=1)
+            prev_norm = torch.nn.functional.normalize(prev_hs, dim=1)
+
+            # Dropout-augmented anchor — simulates appearance variation at re-entry
+            # training=True forces dropout active regardless of model mode
+            curr_aug = dropout(curr_hs, p=0.3, training=True)
+            curr_aug_norm = torch.nn.functional.normalize(curr_aug, dim=1)
+
+            M = curr_hs.shape[0]
+            labels = torch.arange(M, device=curr_hs.device)
+
+            # Loss term 1: clean anchor vs prev-frame positive
+            sim_1 = torch.matmul(curr_norm, prev_norm.t()) / temperature
+            loss_1 = torch.nn.functional.cross_entropy(sim_1, labels)
+
+            # Loss term 2: dropout-augmented anchor vs prev-frame positive
+            sim_2 = torch.matmul(curr_aug_norm, prev_norm.t()) / temperature
+            loss_2 = torch.nn.functional.cross_entropy(sim_2, labels)
+
+            total_loss.append((loss_1 + loss_2) / 2.0)
+
+        if not total_loss:
+            return {'loss_contrastive': torch.tensor(0.0, device=outputs['hs_embed'].device, requires_grad=True)}
+
+        return {'loss_contrastive': torch.stack(total_loss).mean()}
+        
     def loss_masks(self, outputs, targets, indices, num_boxes):
         """Compute the losses related to the masks: the focal loss and the dice loss.
            targets dicts must contain the key "masks" containing a tensor of
@@ -375,6 +453,7 @@ class SetCriterion(nn.Module):
             'cardinality': self.loss_cardinality,
             'boxes': self.loss_boxes,
             'masks': self.loss_masks,
+            'contrastive': self.loss_contrastive,   # added this for Contrastive Re-ID Loss on Track Queries  plan  A (temporal)
         }
         assert loss in loss_map, f'do you really want to compute {loss} loss?'
         return loss_map[loss](outputs, targets, indices, num_boxes, **kwargs)
@@ -414,6 +493,10 @@ class SetCriterion(nn.Module):
                     if loss == 'masks':
                         # Intermediate masks losses are too costly to compute, we ignore them.
                         continue
+                    if loss == 'contrastive': # this is added for con_triploss_temporal branch.
+                        # it skips contrastive for all 5 intermediate decoder layers and jumps to final layer
+                        continue
+                    
                     kwargs = {}
                     if loss == 'labels':
                         # Logging is enabled only for the last layer
@@ -431,6 +514,9 @@ class SetCriterion(nn.Module):
             for loss in self.losses:
                 if loss == 'masks':
                     # Intermediate masks losses are too costly to compute, we ignore them.
+                    continue
+                if loss == 'contrastive': # this is added for con_triploss_temporal branch.
+                    # it skips contrastive for all 5 intermediate encoder layers and jumps to final layer
                     continue
                 kwargs = {}
                 if loss == 'labels':

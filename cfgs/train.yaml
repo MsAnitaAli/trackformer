@@ -82,6 +82,7 @@ dice_loss_coef: 1.0
 cls_loss_coef: 1.0
 bbox_loss_coef: 5.0
 giou_loss_coef: 2
+contrastive_loss_coef: 0.0 # added this for Contrastive Re-ID Loss on Track Queries  (temporal)
 # Relative classification weight of the no-object class
 eos_coef: 0.1
 focal_loss: false
