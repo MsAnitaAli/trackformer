@@ -40,6 +40,9 @@ ex.add_named_config('egotracks_prototype', 'cfgs/train_egotracks_prototype.yaml'
 ex.add_named_config('egohumans_full', 'cfgs/train_egohumans_full.yaml')
 # Added for appearance branch
 ex.add_named_config('egohumans_appearance', 'cfgs/train_egohumans_appearance.yaml')
+# added for con_triploss_buffer branch
+ex.add_named_config('egohumans_con_triploss_buffer',
+                    'cfgs/train_egohumans_con_triploss_buffer.yaml')
 
 def train(args: Namespace) -> None:
     print(args)

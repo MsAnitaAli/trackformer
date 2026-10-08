@@ -2,6 +2,8 @@
 """
 Train and eval functions used in main.py
 """
+from collections import deque  # added for branch con_triploss_buffer
+
 import logging
 import math
 import os
@@ -24,26 +26,6 @@ from .vis import vis_results
 def make_results(outputs, targets, postprocessors, tracking, return_only_orig=True):
     target_sizes = torch.stack([t["size"] for t in targets], dim=0)
     orig_target_sizes = torch.stack([t["orig_size"] for t in targets], dim=0)
-
-    # remove placeholder track queries
-    # results_mask = None
-    # if tracking:
-    #     results_mask = [~t['track_queries_placeholder_mask'] for t in targets]
-    #     for target, res_mask in zip(targets, results_mask):
-    #         target['track_queries_mask'] = target['track_queries_mask'][res_mask]
-    #         target['track_queries_fal_pos_mask'] = target['track_queries_fal_pos_mask'][res_mask]
-
-    # results = None
-    # if not return_only_orig:
-    #     results = postprocessors['bbox'](outputs, target_sizes, results_mask)
-    # results_orig = postprocessors['bbox'](outputs, orig_target_sizes, results_mask)
-
-    # if 'segm' in postprocessors:
-    #     results_orig = postprocessors['segm'](
-    #         results_orig, outputs, orig_target_sizes, target_sizes, results_mask)
-    #     if not return_only_orig:
-    #         results = postprocessors['segm'](
-    #             results, outputs, target_sizes, target_sizes, results_mask)
 
     results = None
     if not return_only_orig:
@@ -85,9 +67,9 @@ def make_results(outputs, targets, postprocessors, tracking, return_only_orig=Tr
 
             if 'track_query_match_ids' in target and len(target['track_query_match_ids']):
                 track_queries_iou, _ = box_iou(
-                    target['boxes'][target['track_query_match_ids'].to(target['boxes'].device)], 
+                    target['boxes'][target['track_query_match_ids'].to(target['boxes'].device)],
                     result['boxes'])
-                    # line 88 was modified to handle visdom data display issue 
+                # line modified to handle visdom data display issue
 
                 box_ids = [box_id
                     for box_id, (is_track_query, is_fals_pos_track_query)
@@ -117,14 +99,48 @@ def train_one_epoch(model: torch.nn.Module, criterion: torch.nn.Module, postproc
     metric_logger.add_meter('lr', utils.SmoothedValue(window_size=1, fmt='{value:.6f}'))
     metric_logger.add_meter('class_error', utils.SmoothedValue(window_size=1, fmt='{value:.2f}'))
 
+    # ── Temporal gap buffer (con_triploss_buffer branch) ──────────────────────
+    # Buffer is initialised OUTSIDE the loop so it accumulates across iterations.
+    # Each entry stores track_query_hs_embeds per batch item from one past
+    # training step. After GAP_K steps the oldest entry (k steps ago) is used
+    # as the hard positive for the contrastive loss instead of the adjacent frame.
+    # Note: consecutive iterations may come from different sequences due to
+    # dataloader shuffling; loss_contrastive handles size mismatches via K_min
+    # truncation and falls back to adjacent-frame positives when sizes differ.
+    GAP_K = 5
+    hs_embed_buffer = deque(maxlen=GAP_K)
+    # ─────────────────────────────────────────────────────────────────────────
+
     for i, (samples, targets) in enumerate(metric_logger.log_every(data_loader, epoch)):
         samples = samples.to(device)
         targets = [utils.nested_dict_to_device(t, device) for t in targets]
+
+        # ── Inject gap embeddings from k iterations ago ───────────────────────
+        # This runs BEFORE the model call so the criterion sees the gap key.
+        # model.forward does not inspect track_query_hs_embeds_gap so it is
+        # safe to add it to targets here.
+        if len(hs_embed_buffer) == GAP_K:
+            gap_entry = hs_embed_buffer[0]  # oldest entry in the buffer
+            for b_idx, t in enumerate(targets):
+                if (b_idx < len(gap_entry)
+                        and gap_entry[b_idx] is not None):
+                    t['track_query_hs_embeds_gap'] = gap_entry[b_idx].to(device)
+        # ─────────────────────────────────────────────────────────────────────
 
         # in order to be able to modify targets inside the forward call we need
         # to pass it through as torch.nn.parallel.DistributedDataParallel only
         # passes copies
         outputs, targets, *_ = model(samples, targets)
+
+        # ── Store current track_query_hs_embeds for future gap use ───────────
+        # Detach and move to CPU to avoid holding GPU memory across k steps.
+        current_entry = []
+        for t in targets:
+            tqhe = t.get('track_query_hs_embeds', None)
+            current_entry.append(
+                tqhe.detach().cpu() if tqhe is not None else None)
+        hs_embed_buffer.append(current_entry)
+        # ─────────────────────────────────────────────────────────────────────
 
         loss_dict = criterion(outputs, targets)
         weight_dict = criterion.weight_dict
@@ -155,11 +171,10 @@ def train_one_epoch(model: torch.nn.Module, criterion: torch.nn.Module, postproc
                              **loss_dict_reduced_scaled,
                              **loss_dict_reduced_unscaled)
         metric_logger.update(class_error=loss_dict_reduced['class_error'])
-        metric_logger.update(lr=optimizer.param_groups[0]["lr"],
-                             lr_backbone=optimizer.param_groups[1]["lr"])
+        metric_logger.update(lr=optimizer.param_groups[0]["lr"])
 
         if visualizers and (i == 0 or not i % args.vis_and_log_interval):
-            _, results = make_results(
+            results_orig, results = make_results(
                 outputs, targets, postprocessors, args.tracking, return_only_orig=False)
 
             vis_results(
@@ -191,7 +206,6 @@ def evaluate(model, criterion, postprocessors, data_loader, device,
     base_ds = get_coco_api_from_dataset(data_loader.dataset)
     iou_types = tuple(k for k in ('bbox', 'segm') if k in postprocessors.keys())
     coco_evaluator = CocoEvaluator(base_ds, iou_types)
-    # coco_evaluator.coco_eval[iou_types[0]].params.iouThrs = [0, 0.1, 0.5, 0.75]
 
     panoptic_evaluator = None
     if 'panoptic' in postprocessors.keys():
@@ -234,12 +248,10 @@ def evaluate(model, criterion, postprocessors, data_loader, device,
         else:
             results_orig, _ = make_results(outputs, targets, postprocessors, args.tracking)
 
-        # TODO. remove cocoDts from coco eval and change example results output
         if coco_evaluator is not None:
             results_orig = {
                 target['image_id'].item(): output
                 for target, output in zip(targets, results_orig)}
-
             coco_evaluator.update(results_orig)
 
         if panoptic_evaluator is not None:
@@ -263,7 +275,6 @@ def evaluate(model, criterion, postprocessors, data_loader, device,
     if panoptic_evaluator is not None:
         panoptic_evaluator.synchronize_between_processes()
 
-    # accumulate predictions from all images
     if coco_evaluator is not None:
         coco_evaluator.accumulate()
         coco_evaluator.summarize()
@@ -287,14 +298,12 @@ def evaluate(model, criterion, postprocessors, data_loader, device,
 
         ex.logger = logging.getLogger("submitit")
 
-        # distribute evaluation of seqs to processes
         seqs = data_loader.dataset.sequences
         seqs_per_rank = {i: [] for i in range(utils.get_world_size())}
         for i, seq in enumerate(seqs):
             rank = i % utils.get_world_size()
             seqs_per_rank[rank].append(seq)
 
-        # only evaluate one seq in debug mode
         if args.debug:
             seqs_per_rank = {k: v[:1] for k, v in seqs_per_rank.items()}
             seqs = [s for ss in seqs_per_rank.values() for s in ss]
@@ -307,8 +316,6 @@ def evaluate(model, criterion, postprocessors, data_loader, device,
         if args.distributed:
             model_without_ddp = model.module
 
-        # mask prediction is too slow and consumes a lot of memory to
-        # run it during tracking training.
         if isinstance(model, DETRSegm):
             model_without_ddp = model_without_ddp.detr
 
@@ -327,10 +334,7 @@ def evaluate(model, criterion, postprocessors, data_loader, device,
         mot_accums = utils.all_gather(run.result)[:len(seqs)]
         mot_accums = [item for sublist in mot_accums for item in sublist]
 
-        # we compute seqs results on muliple nodes but evaluate the accumulated
-        # results due to seqs being weighted differently (seg length)
-        eval_summary, eval_summary_str = evaluate_mot_accums(
-            mot_accums, seqs)
+        eval_summary, eval_summary_str = evaluate_mot_accums(mot_accums, seqs)
         print(eval_summary_str)
 
         for metric in ['mota', 'idf1']:
@@ -347,9 +351,7 @@ def evaluate(model, criterion, postprocessors, data_loader, device,
     if visualizers:
         vis_epoch = visualizers['epoch_metrics']
         y_data = [stats[legend_name] for legend_name in vis_epoch.viz_opts['legend']]
-
         vis_epoch.plot(y_data, epoch)
-
         visualizers['epoch_eval'].plot(eval_stats, epoch)
 
     if args.debug:

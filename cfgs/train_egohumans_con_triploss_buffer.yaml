@@ -1,0 +1,18 @@
+# _________ Created this file for Contrastive Re-ID Loss on Track Queries (branch egohumans_con_triploss_buffer)
+# Inherits egohumans_full config, and appearnce branch overrides only these values
+contrastive_loss_coef: 0.05  # Contrastive Re-ID Loss on Track Queries (buffer)
+lr: 0.000005 # for con_triploss  it was 0.00001
+lr_backbone: 0.0
+lr_drop: 8
+epochs: 10
+batch_size: 2
+num_workers: 4
+val_interval: 1
+save_model_interval: 1
+#resume: models/egohumans_appearance/checkpoint_epoch_15.pth  #  from appearance plan 
+resume: models/egohumans_appearance2/checkpoint_epoch_15.pth # this variant gave better checkpoint
+# I used it for egomotion plan
+resume_optim: False
+resume_vis: False # This is a fresh visdom environment (egohumans_con_triploss_buffer), so it doesn't need to resume old plot window states
+output_dir: 'models/egohumans_con_triploss_buffer'
+
